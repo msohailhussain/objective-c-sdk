@@ -39,6 +39,7 @@
     if (block == nil) {
         return nil;
     }
+    
     self = [super init];
     if (self != nil) {
         block(self);
@@ -46,15 +47,17 @@
     else {
         return nil;
     }
+    
     if (_datafile == nil) {
+        [_logger logMessage:@"[OPTIMIZELY CORE BUILDER] Invalid datafile. Optimizely client not created." withLevel:OptimizelyLogLevelError];
         return nil;
     }
     
     _config = [OPTLYProjectConfig initWithBuilderBlock:^(OPTLYProjectConfigBuilder * _Nullable builder) {
         builder.datafile = _datafile;
-        builder.userProfile = _userProfile;
-        builder.logger = _logger;
         builder.errorHandler = _errorHandler;
+        builder.logger = _logger;
+        builder.userProfile = _userProfile;
     }];
     
     if (_config == nil) {
@@ -63,9 +66,7 @@
                                          userInfo:@{NSLocalizedDescriptionKey :
                                                         NSLocalizedString(OPTLYErrorHandlerMessagesConfigInvalid, nil)}];
         [_errorHandler handleError:error];
-        
-        NSString *logMessage = OPTLYErrorHandlerMessagesConfigInvalid;
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
+        [_logger logMessage:OPTLYErrorHandlerMessagesConfigInvalid withLevel:OptimizelyLogLevelError];
         
         return nil;
     }
