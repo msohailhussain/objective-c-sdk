@@ -33,6 +33,8 @@
 @property (nonatomic, readonly, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
 /// The logger to be used for the manager, client, and all subcomponents
 @property (nonatomic, readonly, strong, nullable) id<OPTLYLogger> logger;
+/// The user profile used to store user data
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /**
  * Init with builder block

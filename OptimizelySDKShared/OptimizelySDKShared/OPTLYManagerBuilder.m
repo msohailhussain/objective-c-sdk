@@ -19,6 +19,7 @@
 #import <OptimizelySDKCore/OPTLYErrorHandler.h>
 #import <OptimizelySDKCore/OPTLYEventDispatcher.h>
 #import <OptimizelySDKCore/OPTLYLogger.h>
+#import <OptimizelySDKCore/OPTLYUserProfile.h>
 
 @implementation OPTLYManagerBuilder
 
@@ -70,4 +71,10 @@
     return _logger;
 }
 
+- (id<OPTLYUserProfile>)userProfile {
+    if (!_userProfile) {
+        _userProfile = [[OPTLYUserProfileNoOp alloc] init];
+    }
+    return _userProfile;
+}
 @end

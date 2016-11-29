@@ -47,15 +47,13 @@
                                  withLevel:OptimizelyLogLevelError];
                 return nil;
             }
-            _projectId = builder.projectId;
             _datafile = builder.datafile;
+            _datafileManager = builder.datafileManager;
             _errorHandler = builder.errorHandler;
             _eventDispatcher = builder.eventDispatcher;
             _logger = builder.logger;
-            // initialize datafile manager
-            _datafileManager = builder.datafileManager;
-            // TODO: Josh W. initialize event dispatcher
-            // TODO: Josh W. initialize user experiment record
+            _projectId = builder.projectId;
+            _userProfile = builder.userProfile;
         }
         return self;
     }
