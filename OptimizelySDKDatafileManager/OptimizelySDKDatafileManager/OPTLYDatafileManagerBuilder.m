@@ -14,10 +14,11 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
-#import "OPTLYDatafileManagerBuilder.h"
 #import <OptimizelySDKCore/OPTLYErrorHandler.h>
 #import <OptimizelySDKCore/OPTLYLogger.h>
 #import <OptimizelySDKCore/OPTLYLoggerMessages.h>
+#import "OPTLYDatafileManager.h"
+#import "OPTLYDatafileManagerBuilder.h"
 
 @implementation OPTLYDatafileManagerBuilder
 
@@ -51,7 +52,7 @@
 - (NSTimeInterval)datafileFetchInterval {
     if (!_datafileFetchInterval) {
         // set default datafile Fetch interval to 0 so we never poll for the datafile
-        _datafileFetchInterval = 0;
+        _datafileFetchInterval = OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
     }
     return _datafileFetchInterval;
 }

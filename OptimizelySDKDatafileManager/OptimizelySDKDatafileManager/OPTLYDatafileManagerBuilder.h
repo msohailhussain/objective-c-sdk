@@ -15,7 +15,6 @@
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <OptimizelySDKCore/OPTLYDatafileManager.h>
 
 @class OPTLYDatafileManagerBuilder;
 @protocol OPTLYErrorHandler, OPTLYLogger;
@@ -26,7 +25,7 @@ typedef void (^OPTLYDatafileManagerBuilderBlock)(OPTLYDatafileManagerBuilder * _
 @interface OPTLYDatafileManagerBuilder : NSObject
 
 /** The time interval to regularly fetch the datafile.
- * The default time interval is 0. This means that the datafile manager will NOT regularly poll for a new datafile during the app session.
+ *  The default time interval is 2 minutes. This means that the datafile manager will NOT regularly poll for a new datafile during the app session.
  */
 @property (nonatomic, readwrite) NSTimeInterval datafileFetchInterval;
 /// The projectID of the project we want to get the datafile for.

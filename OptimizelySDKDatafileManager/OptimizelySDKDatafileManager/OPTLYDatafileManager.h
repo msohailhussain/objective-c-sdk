@@ -18,6 +18,8 @@
 #import <OptimizelySDKCore/OPTLYDatafileManager.h>
 #import "OPTLYDatafileManagerBuilder.h"
 
+extern NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
+
 @protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYLogger;
 
 @interface OPTLYDatafileManager : NSObject<OPTLYDatafileManager>

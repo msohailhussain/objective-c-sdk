@@ -23,7 +23,7 @@
 #import "OPTLYDatafileManager.h"
 
 // default datafile download interval is 2 minutes
-NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
+NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s = 120;
 
 @interface OPTLYDatafileManager ()
 @property (nonatomic, strong) OPTLYDataStore *dataStore;
@@ -41,7 +41,7 @@ NSTimeInterval const kDefaultDatafileFetchInterval_s = 120;
     if (builder != nil) {
         self = [super init];
         if (self != nil) {
-            _datafileFetchInterval = kDefaultDatafileFetchInterval_s;
+            _datafileFetchInterval = OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
             _datafileFetchInterval = builder.datafileFetchInterval;
             _projectId = builder.projectId;
             _errorHandler = builder.errorHandler;
