@@ -33,10 +33,6 @@
 #import "OPTLYVariation.h"
 #import "OPTLYVariationVariable.h"
 
-static NSString *const kExperimentKey = @"experimentKey";
-static NSString *const kId = @"id";
-static NSString *const kValue = @"value";
-
 @implementation Optimizely
 
 + (instancetype)initWithBuilderBlock:(OPTLYBuilderBlock)block {
