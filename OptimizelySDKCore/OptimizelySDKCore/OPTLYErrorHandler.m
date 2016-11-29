@@ -16,7 +16,7 @@
 
 #import "OPTLYErrorHandler.h"
 
-@implementation OPTLYErrorHandler
+@implementation OPTLYErrorHandlerUtility
 
 + (BOOL)conformsToOPTLYErrorHandlerProtocol:(Class)instanceClass
 {

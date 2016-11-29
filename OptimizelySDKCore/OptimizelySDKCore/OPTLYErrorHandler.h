@@ -36,7 +36,7 @@
 
 @end
 
-@interface OPTLYErrorHandler : NSObject
+@interface OPTLYErrorHandlerUtility : NSObject
 /**
  * Utility method to check if a class conforms to the OPTLYErrorHandler protocol
  * This method uses compile and run time checks

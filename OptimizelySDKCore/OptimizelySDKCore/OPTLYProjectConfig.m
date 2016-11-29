@@ -85,7 +85,7 @@ NSString * const kClientEngine             = @"objective-c-sdk-core";
     }
     
     if (builder.errorHandler) {
-        if ([OPTLYErrorHandler conformsToOPTLYErrorHandlerProtocol:[builder.errorHandler class]]) {
+        if ([OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[builder.errorHandler class]]) {
             _errorHandler = (id<OPTLYErrorHandler, Ignore>)builder.errorHandler;
         } else {
             _errorHandler = [OPTLYErrorHandlerDefault new];

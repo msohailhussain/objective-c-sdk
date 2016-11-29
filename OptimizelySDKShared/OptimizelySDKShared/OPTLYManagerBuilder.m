@@ -33,13 +33,31 @@
 
 - (id)initWithBlock:(OPTLYManagerBuilderBlock)block {
     NSParameterAssert(block);
+    
     self = [super init];
     if (self != nil) {
         block(self);
+    
         if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[self.datafileManager class]]) {
-            return nil;
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid datafile manager." withLevel:OptimizelyLogLevelWarning];
         }
-    }    
+        
+        if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[self.errorHandler class]]) {
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid error handler." withLevel:OptimizelyLogLevelWarning];
+        }
+        
+        if (![OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[self.eventDispatcher class]]) {
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid event dispatcher manager." withLevel:OptimizelyLogLevelWarning];
+        }
+        
+        if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[self.logger class]]) {
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid logger handler." withLevel:OptimizelyLogLevelWarning];
+        }
+        
+        if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[self.userProfile class]]) {
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid user profile." withLevel:OptimizelyLogLevelWarning];
+        }
+    }
     return self;
 }
 

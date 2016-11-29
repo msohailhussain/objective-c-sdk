@@ -129,9 +129,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
         }
         else {
             // Log error: variation not in datafile not activating user
-            [OPTLYErrorHandler handleError:self.config.errorHandler
-                                      code:OPTLYErrorTypesDataUnknown
-                               description:NSLocalizedString(OPTLYErrorHandlerMessagesVariationUnknown, variationId)];
+            [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                             code:OPTLYErrorTypesDataUnknown
+                                      description:NSLocalizedString(OPTLYErrorHandlerMessagesVariationUnknown, variationId)];
         }
         return forcedVariation;
     }
@@ -146,9 +146,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
     
     if ([group.trafficAllocations count] == 0) {
         // log error if there are no traffic allocation values
-        [OPTLYErrorHandler handleError:self.config.errorHandler
-                                  code:OPTLYErrorTypesDataUnknown
-                           description:NSLocalizedString(OPTLYErrorHandlerMessagesTrafficAllocationUnknown, group.groupId)];
+        [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                         code:OPTLYErrorTypesDataUnknown
+                                  description:NSLocalizedString(OPTLYErrorHandlerMessagesTrafficAllocationUnknown, group.groupId)];
         return nil;
     }
     
@@ -160,9 +160,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
             // propagate errors and logs for unknown experiment
             if (!experiment)
             {
-                [OPTLYErrorHandler handleError:self.config.errorHandler
-                                          code:OPTLYErrorTypesDataUnknown
-                                   description:NSLocalizedString(OPTLYErrorHandlerMessagesExperimentUnknown, experimentId)];
+                [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                                 code:OPTLYErrorTypesDataUnknown
+                                          description:NSLocalizedString(OPTLYErrorHandlerMessagesExperimentUnknown, experimentId)];
                 
                 NSString *logMessage =  [NSString stringWithFormat:OPTLYLoggerMessagesForcedBucketingFailed, experimentId, userId];
                 [self.config.logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
@@ -172,9 +172,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
     }
     
     // log error if invalid bucketing id
-    [OPTLYErrorHandler handleError:self.config.errorHandler
-                              code:OPTLYErrorTypesDatafileInvalid
-                       description:NSLocalizedString(OPTLYErrorHandlerMessagesBucketingIdInvalid, bucketValue)];
+    [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                     code:OPTLYErrorTypesDatafileInvalid
+                              description:NSLocalizedString(OPTLYErrorHandlerMessagesBucketingIdInvalid, bucketValue)];
     
     return nil;
 }
@@ -186,9 +186,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
     if ([experiment.trafficAllocations count] == 0) {
         // log error if there are no traffic allocation values
         NSString *logErrorMessage = NSLocalizedString(OPTLYErrorHandlerMessagesTrafficAllocationUnknown, experimentId);
-        [OPTLYErrorHandler handleError:self.config.errorHandler
-                                  code:OPTLYErrorTypesDataUnknown
-                           description:logErrorMessage];
+        [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                         code:OPTLYErrorTypesDataUnknown
+                                  description:logErrorMessage];
         [self.config.logger logMessage:logErrorMessage withLevel:OptimizelyLogLevelDebug];
         return nil;
     }
@@ -201,9 +201,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
             
             // propagate errors and logs for unknown variation
             if (!variation) {
-                [OPTLYErrorHandler handleError:self.config.errorHandler
-                                          code:OPTLYErrorTypesDataUnknown
-                                   description:NSLocalizedString(OPTLYErrorHandlerMessagesVariationUnknown, variationId)];
+                [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                                 code:OPTLYErrorTypesDataUnknown
+                                          description:NSLocalizedString(OPTLYErrorHandlerMessagesVariationUnknown, variationId)];
                 
                 NSString *variationUnknownMessage = [NSString stringWithFormat:OPTLYLoggerMessagesForcedBucketingFailed, variationId, userId];
                 [self.config.logger logMessage:variationUnknownMessage withLevel:OptimizelyLogLevelError];
@@ -217,9 +217,9 @@ NSString *const BUCKETING_ID_TEMPLATE = @"%@%@"; // "<user_id><experiment_id>"
     }
     
     // log error if invalid bucketing id
-    [OPTLYErrorHandler handleError:self.config.errorHandler
-                              code:OPTLYErrorTypesDatafileInvalid
-                       description:NSLocalizedString(OPTLYErrorHandlerMessagesBucketingIdInvalid, bucketValue)];
+    [OPTLYErrorHandlerUtility handleError:self.config.errorHandler
+                                     code:OPTLYErrorTypesDatafileInvalid
+                              description:NSLocalizedString(OPTLYErrorHandlerMessagesBucketingIdInvalid, bucketValue)];
     
     return nil;
 }
