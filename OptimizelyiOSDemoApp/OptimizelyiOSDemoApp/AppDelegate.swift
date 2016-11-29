@@ -148,7 +148,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         networkService.downloadProjectConfig(projectId) { (data, response, error) in
             let projectConfig = OPTLYProjectConfig.initWithBuilderBlock({ (builder) in
-                builder?.datafile = data!
+                if data != nil {
+                    builder?.datafile = data!
+                }
                 builder?.userProfile = OPTLYUserProfile.init()
             });
             print("projectConfig: ", projectConfig)
@@ -165,4 +167,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
-
