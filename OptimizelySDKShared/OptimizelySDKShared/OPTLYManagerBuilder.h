@@ -37,7 +37,7 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
 /// The logger to be used for the manager, client, and all subcomponents
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
-/// The user profile used to store user data
+/// User profile to be used by the client to store user-specific data.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /// Create the Optimizely Manager object.
