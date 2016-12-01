@@ -122,10 +122,10 @@
                                    attributes:(NSDictionary<NSString *,NSString *> *)attributes
 {
     if (self.userProfile != nil) {
-        NSString *storedVaraitionKey = [self.userProfile getVariationFor:userId experiment:experimentKey];
-        if (storedVaraitionKey != nil) {
+        NSString *storedVariationKey = [self.userProfile getVariationForUser:userId experiment:experimentKey];
+        if (storedVariationKey != nil) {
             OPTLYVariation *storedVariation = [[self.config getExperimentForKey:experimentKey]
-                                               getVariationForVariationKey:storedVaraitionKey];
+                                               getVariationForVariationKey:storedVariationKey];
             if (storedVariation != nil) {
                 return storedVariation;
             }
@@ -136,7 +136,7 @@
                                                         userId:userId
                                                     attributes:attributes
                                                       bucketer:self.bucketer];
-    [self.userProfile save:userId
+    [self.userProfile saveUser:userId
                 experiment:experimentKey
                  variation:bucketedVariation.variationKey];
     return bucketedVariation;
