@@ -127,7 +127,7 @@ NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s = 120;
     NSData *datafile = [self.dataStore getFile:self.projectId
                        type:OPTLYDataStoreDataTypeDatafile
                       error:&error];
-    if (error != nil ) {
+    if (error != nil) {
         [self.errorHandler handleError:error];
     }
     return datafile;
