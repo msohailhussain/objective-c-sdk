@@ -36,7 +36,7 @@
         block(self);
     }
     
-    // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+    // ---- Set default values if no submodule is provided or the submodule provided is invalid ----
     // set the default logger first!
     if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
         NSString *logMessage = _logger ? @"[USER PROFILE BUILDER] Invalid logger handler provided." : @"[USER PROFILE BUILDER] No logger handler provided.";

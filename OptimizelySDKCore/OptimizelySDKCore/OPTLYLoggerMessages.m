@@ -146,7 +146,26 @@ NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError = @
 NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDate = @"[DATAFILE MANAGER] Last modified date %@ found for project %@.";
 NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDateNotFound = @"[DATAFILE MANAGER] Last modified date not found for project %@.";
 
-// ---- Builder Classes ----
+// ---- Object Builders ----
+// builder types
+NSString *const OPTLYLoggerMessagesBuilderTypeCore = @"[CORE BUILDER]";
+NSString *const OPTLYLoggerMessagesBuilderTypeManager = @"[MANAGER BUILDER]";
+NSString *const OPTLYLoggerMessagesBuilderTypeDatafileManager = @"[DATAFILE MANAGER BUILDER]";
+NSString *const OPTLYLoggerMessagesBuilderTypeEventDispatcher = @"[EVENT DISPATCH BUILDER]";
+NSString *const OPTLYLoggerMessagesBuilderTypeUserProfile = @"[USER PROFILE BUILDER]";
+// Warning
+NSString *const OPTLYLoggerMessagesBuilderInvalidLogger = @"%@ Invalid logger handler provided.";
+NSString *const OPTLYLoggerMessagesBuilderNoLogger = @"%@ No logger handler provided.";
+NSString *const OPTLYLoggerMessagesBuilderInvalidErrorHandler = @"%@ Invalid error handler provided.";
+NSString *const OPTLYLoggerMessagesBuilderNoErrorHandler = @"%@ No error handler provided.";
+NSString *const OPTLYLoggerMessagesBuilderInvalidDatafileManager = @"%@ Invalid datafile manager provided.";
+NSString *const OPTLYLoggerMessagesBuilderNoDatafileManager = @"%@ No datafile manager provided.";
+NSString *const OPTLYLoggerMessagesBuilderInvalidEventDispatcher = @"%@ Invalid event dispatcher provided.";
+NSString *const OPTLYLoggerMessagesBuilderNoEventDispatcher = @"%@ No event dispatcher provided.";
+NSString *const OPTLYLoggerMessagesBuilderInvalidUserProfile = @"%@ Invalid user profile provided.";
+NSString *const OPTLYLoggerMessagesBuilderNoUserProfile = @"%@ No user profile provided.";
+// Error
+NSString *const OPTLYLoggerMessagesBuilderInvalidDatafile = @"%@ Invalid datafile.";
 
 
 @implementation OPTLYLoggerMessages

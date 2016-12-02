@@ -142,8 +142,8 @@
                                                     attributes:attributes
                                                       bucketer:self.bucketer];
     [self.userProfile saveUser:userId
-                experiment:experimentKey
-                 variation:bucketedVariation.variationKey];
+                    experiment:experimentKey
+                     variation:bucketedVariation.variationKey];
     return bucketedVariation;
 }
 

@@ -222,8 +222,13 @@ typedef NS_ENUM(NSInteger, OPTLYLiveVariableError) {
 
 /// The Optimizely datafile that contains all information related to a project. 
 @property (nonatomic, readwrite, strong, nullable) NSData *datafile;
+
+/// The bucketer is responsible for bucketing experiments and variations
+@property (nonatomic, strong, readonly, nullable) id<OPTLYBucketer> bucketer;
 /// The OPTLYProjectConfig is a data structure that contains all the information from the datafile.
 @property (nonatomic, readonly, strong, nullable) OPTLYProjectConfig *config;
+/// Builds the conversion and impression events
+@property (nonatomic, strong, readonly, nullable) id<OPTLYEventBuilder> eventBuilder;
 /// The datafile manager manages the datafile download and caching.
 /// The default datafile manager can be overridden by any object that conforms to the OPTLYDatafileManager protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;

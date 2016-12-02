@@ -34,17 +34,21 @@
     if (self != nil) {
         block(self);
         
-        // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+        // ---- Set default values if no submodule is provided or the submodule provided is invalid ----
         // set the default logger first!
         if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
-            NSString *logMessage = _logger ? @"[DATAFILE MANAGER BUILDER] Invalid logger handler provided." : @"[DATAFILE MANAGER BUILDER] No logger handler provided.";
+            NSString *logMessage = _logger ? OPTLYLoggerMessagesBuilderInvalidLogger : OPTLYLoggerMessagesBuilderNoLogger;
+            
             _logger = [OPTLYLoggerDefault new];
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            
+            [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeDatafileManager]
+                      withLevel:OptimizelyLogLevelWarning];
         }
         
         if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
-            NSString *logMessage = _errorHandler ? @"[DATAFILE MANAGER BUILDER] Invalid error handler provided." : @"[DATAFILE MANAGER BUILDER] No error handler provided.";
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            NSString *logMessage = _errorHandler ? OPTLYLoggerMessagesBuilderInvalidErrorHandler : OPTLYLoggerMessagesBuilderNoErrorHandler;
+            [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeDatafileManager]
+                      withLevel:OptimizelyLogLevelWarning];
             _errorHandler = [OPTLYErrorHandlerNoOp new];
         }
         

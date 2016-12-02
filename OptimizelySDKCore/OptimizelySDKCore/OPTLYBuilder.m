@@ -52,37 +52,43 @@
     // ---- Set default values if no submodule is provided or the submodule provided is invalid ----
     // set the default logger first!
     if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
-        NSString *logMessage = _logger ? @"[CORE BUILDER] Invalid logger handler provided." : @"[MANAGER BUILDER] No logger handler provided.";
+        NSString *logMessage = _logger ? OPTLYLoggerMessagesBuilderInvalidLogger : OPTLYLoggerMessagesBuilderNoLogger;
         _logger = [OPTLYLoggerDefault new];
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelWarning];
     }
     
     if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[_datafileManager class]]) {
-        NSString *logMessage = _datafileManager ? @"[CORE BUILDER] Invalid datafile manager provided." : @"[MANAGER BUILDER] No datafile manager provided.";
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        NSString *logMessage = _datafileManager ? OPTLYLoggerMessagesBuilderInvalidDatafileManager : OPTLYLoggerMessagesBuilderNoDatafileManager;
+        [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelWarning];
         _datafileManager = [OPTLYDatafileManagerDefault new];
     }
     
     if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
-        NSString *logMessage = _errorHandler ? @"[CORE BUILDER] Invalid error handler provided." : @"[MANAGER BUILDER] No error handler provided.";
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        NSString *logMessage = _errorHandler ? OPTLYLoggerMessagesBuilderInvalidErrorHandler : OPTLYLoggerMessagesBuilderNoErrorHandler;
+        [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelWarning];
         _errorHandler = [OPTLYErrorHandlerNoOp new];
     }
     
     if (![OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[_eventDispatcher class]]) {
-        NSString *logMessage = _eventDispatcher ? @"[CORE BUILDER] Invalid event dispatcher manager provided." : @"[MANAGER BUILDER] No event dispatcher manager provided.";
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        NSString *logMessage = _eventDispatcher ? OPTLYLoggerMessagesBuilderInvalidEventDispatcher : OPTLYLoggerMessagesBuilderNoEventDispatcher;
+        [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelWarning];
         _eventDispatcher = [OPTLYEventDispatcherDefault new];
     }
     
     if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[_userProfile class]]) {
-        NSString *logMessage = _userProfile ? @"[CORE BUILDER] Invalid user profile provided." : @"[MANAGER BUILDER] No user profile provided.";
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        NSString *logMessage = _userProfile ? OPTLYLoggerMessagesBuilderInvalidUserProfile : OPTLYLoggerMessagesBuilderNoUserProfile;
+        [_logger logMessage:[NSString stringWithFormat:logMessage, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelWarning];
         _userProfile = [OPTLYUserProfileNoOp new];
     }
     
     if (_datafile == nil) {
-        [_logger logMessage:@"[OPTIMIZELY CORE BUILDER] Invalid datafile. Optimizely client not created." withLevel:OptimizelyLogLevelError];
+        [_logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesBuilderInvalidDatafile, OPTLYLoggerMessagesBuilderTypeCore]
+                  withLevel:OptimizelyLogLevelError];
         return nil;
     }
     

@@ -146,6 +146,27 @@ extern NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedEr
 extern NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDate;
 extern NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDateNotFound;
 
+// ---- Object Builders ----
+// builder types
+extern NSString *const OPTLYLoggerMessagesBuilderTypeCore;
+extern NSString *const OPTLYLoggerMessagesBuilderTypeManager;
+extern NSString *const OPTLYLoggerMessagesBuilderTypeDatafileManager;
+extern NSString *const OPTLYLoggerMessagesBuilderTypeEventDispatcher;
+extern NSString *const OPTLYLoggerMessagesBuilderTypeUserProfile;
+// Warning
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidLogger;
+extern NSString *const OPTLYLoggerMessagesBuilderNoLogger;
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidErrorHandler;
+extern NSString *const OPTLYLoggerMessagesBuilderNoErrorHandler;
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidDatafileManager;
+extern NSString *const OPTLYLoggerMessagesBuilderNoDatafileManager;
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidEventDispatcher;
+extern NSString *const OPTLYLoggerMessagesBuilderNoEventDispatcher;
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidUserProfile;
+extern NSString *const OPTLYLoggerMessagesBuilderNoUserProfile;
+// Error
+extern NSString *const OPTLYLoggerMessagesBuilderInvalidDatafile;
+
 @interface OPTLYLoggerMessages : NSObject
 
 @end
