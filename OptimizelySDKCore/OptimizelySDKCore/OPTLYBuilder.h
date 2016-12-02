@@ -30,24 +30,28 @@ typedef void (^OPTLYBuilderBlock)(OPTLYBuilder * _Nullable builder);
 
 @interface OPTLYBuilder: NSObject
 
-/// A datafile is required to create an Optimizely object.
+/// The Optimizely datafile that contains all information related to a project.
 @property (nonatomic, readwrite, strong, nullable) NSData *datafile;
-/// The Project Configuration created by the builder.
+/// The OPTLYProjectConfig is a data structure that contains all the information from the datafile.
 @property (nonatomic, readonly, strong, nullable) OPTLYProjectConfig *config;
 /// The bucketer created by the builder.
 @property (nonatomic, readonly, strong, nullable) OPTLYBucketer *bucketer;
 /// The event builder created by the builder.
 @property (nonatomic, readonly, strong, nullable) OPTLYEventBuilderDefault *eventBuilder;
-
-/// The datafile manager that will download the datafile for the manager
+/// The datafile manager manages the datafile download and caching.
+/// The default datafile manager can be overridden by any object that conforms to the OPTLYDatafileManager protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
-/// The error handler is by default set to one that is created by Optimizely. This default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
+/// The error handler can handle any errors caught by the Optimizely SDK.
+/// The default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;
-/// The event dispatcher is by default set to one that is created by Optimizely. This default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
+/// The event dispatcher dispatches conversion and impression events to Optimizely backend services to be recorded as results.
+/// The default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
-/// The logger is by default set to one that is created by Optimizely. This default logger can be overridden by any object that conforms to the OPTLYLogger protocol.
+/// The logger logs info, debug, and error data (the level of information can be set).
+/// The default logger can be overridden by any object that conforms to the OPTLYLogger protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
 /// User profile stores user-specific data, like bucketing.
+/// The default logger can be overridden by any object that conforms to the OPTLYUserProfile protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /// Create an Optimizely Builder object.

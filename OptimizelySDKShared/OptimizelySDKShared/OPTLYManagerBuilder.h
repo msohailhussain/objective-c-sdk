@@ -29,15 +29,20 @@ typedef void (^OPTLYManagerBuilderBlock)(OPTLYManagerBuilder * _Nullable builder
 @property (nonatomic, readwrite) NSTimeInterval eventDispatchInterval;
 /// The ID of the Optimizely Project the manager will oversee
 @property (nonatomic, readwrite, strong, nonnull) NSString *projectId;
-/// The datafile manager to be used for the manager
-@property (nonatomic, readwrite, strong, nonnull) id<OPTLYDatafileManager> datafileManager;
-/// The error handler to be used for the manager, client, and all subcomponents
+/// The datafile manager manages the datafile download and caching.
+/// The default datafile manager can be overridden by any object that conforms to the OPTLYDatafileManager protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
+/// The error handler can handle any errors caught by the Optimizely SDK.
+/// The default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;
-/// The event dispatcher to initialize an Optimizely Client with
+/// The event dispatcher dispatches conversion and impression events to Optimizely backend services to be recorded as results.
+/// The default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
-/// The logger to be used for the manager, client, and all subcomponents
+/// The logger logs info, debug, and error data (the level of information can be set).
+/// The default logger can be overridden by any object that conforms to the OPTLYLogger protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
-/// User profile to be used by the client to store user-specific data.
+/// User profile stores user-specific data, like bucketing.
+/// The default logger can be overridden by any object that conforms to the OPTLYUserProfile protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /// Create the Optimizely Manager object.

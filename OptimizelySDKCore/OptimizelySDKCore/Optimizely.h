@@ -220,14 +220,25 @@ typedef NS_ENUM(NSInteger, OPTLYLiveVariableError) {
  */
 @interface Optimizely : NSObject <Optimizely>
 
-@property (nonatomic, strong, readonly, nullable) id<OPTLYBucketer> bucketer;
-@property (nonatomic, strong, readonly, nullable) OPTLYProjectConfig *config;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYDatafileManager> datafileManager;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYErrorHandler> errorHandler;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYEventBuilder> eventBuilder;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYEventDispatcher> eventDispatcher;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYLogger> logger;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYUserProfile> userProfile;
+/// The Optimizely datafile that contains all information related to a project. 
+@property (nonatomic, readwrite, strong, nullable) NSData *datafile;
+/// The OPTLYProjectConfig is a data structure that contains all the information from the datafile.
+@property (nonatomic, readonly, strong, nullable) OPTLYProjectConfig *config;
+/// The datafile manager manages the datafile download and caching.
+/// The default datafile manager can be overridden by any object that conforms to the OPTLYDatafileManager protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
+/// The error handler can handle any errors caught by the Optimizely SDK.
+/// The default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;
+/// The event dispatcher dispatches conversion and impression events to Optimizely backend services to be recorded as results.
+/// The default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
+/// The logger logs info, debug, and error data (the level of information can be set).
+/// The default logger can be overridden by any object that conforms to the OPTLYLogger protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
+/// User profile stores user-specific data, like bucketing.
+/// The default logger can be overridden by any object that conforms to the OPTLYUserProfile protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /**
  * Init with builder block

@@ -25,16 +25,21 @@
 @property (nonatomic, readonly, strong, nonnull) NSString *projectId;
 /// The default datafile to initialize an Optimizely Client with
 @property (nonatomic, readwrite, strong, nullable) NSData *datafile;
-/// The datafile manager that will download the datafile for the manager
-@property (nonatomic, readonly, strong, nullable) id<OPTLYDatafileManager> datafileManager;
-/// The error handler to be used for the manager, client, and all subcomponents
-@property (nonatomic, readonly, strong, nullable) id<OPTLYErrorHandler> errorHandler;
-/// The event dispatcher to initialize an Optimizely Client with
-@property (nonatomic, readonly, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
-/// The logger to be used for the manager, client, and all subcomponents
-@property (nonatomic, readonly, strong, nullable) id<OPTLYLogger> logger;
-/// User profile to be used by the client to store user-specific data.
-@property (nonatomic, readonly, strong, nullable) id<OPTLYUserProfile> userProfile;
+/// The datafile manager manages the datafile download and caching.
+/// The default datafile manager can be overridden by any object that conforms to the OPTLYDatafileManager protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
+/// The error handler can handle any errors caught by the Optimizely SDK.
+/// The default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;
+/// The event dispatcher dispatches conversion and impression events to Optimizely backend services to be recorded as results.
+/// The default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYEventDispatcher> eventDispatcher;
+/// The logger logs info, debug, and error data (the level of information can be set).
+/// The default logger can be overridden by any object that conforms to the OPTLYLogger protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
+/// User profile stores user-specific data, like bucketing.
+/// The default logger can be overridden by any object that conforms to the OPTLYUserProfile protocol.
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
 
 /**
  * Init with builder block
