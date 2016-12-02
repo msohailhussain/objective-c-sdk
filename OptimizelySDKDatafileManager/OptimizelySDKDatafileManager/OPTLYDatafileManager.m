@@ -97,9 +97,7 @@ NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s = 120;
              logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError, projectId, error];
              [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
          }
-         
-         
-         
+
          // call the completion handler
          if (completion != nil) {
              completion(data, response, error);
