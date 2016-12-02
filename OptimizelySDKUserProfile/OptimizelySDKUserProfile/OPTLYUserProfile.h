@@ -22,6 +22,8 @@
 
 @interface OPTLYUserProfile : NSObject<OPTLYUserProfile>
 
+/// optional error handler
+@property (nonatomic, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// Logger provided by the user
 @property (nonatomic, strong, nullable) id<OPTLYLogger> logger;
 

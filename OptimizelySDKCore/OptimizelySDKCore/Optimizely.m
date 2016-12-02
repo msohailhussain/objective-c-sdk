@@ -44,39 +44,22 @@
 }
 
 - (instancetype)initWithBuilder:(OPTLYBuilder *)builder {
-    if (builder != nil) {
-        self = [super init];
-        if (self != nil) {
-            _bucketer = builder.bucketer;
-            _config = builder.config;
-            _datafileManager = builder.datafileManager;
-            _eventBuilder = builder.eventBuilder;
-            _eventDispatcher = builder.eventDispatcher;
-            _errorHandler = builder.errorHandler;
-            _logger = builder.logger;
-            _userProfile = builder.userProfile;
-        }
-        return self;
-    }
-    else {
-        if (_logger == nil) {
-            _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
-        }
-        
-        NSString *logMessage = NSLocalizedString(OPTLYErrorHandlerMessagesBuilderInvalid, nil);
-        [_logger logMessage:logMessage
-                  withLevel:OptimizelyLogLevelError];
-        
-        NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                             code:OPTLYErrorTypesBuilderInvalid
-                                         userInfo:@{NSLocalizedDescriptionKey : logMessage}];
-        
-        if (_errorHandler == nil) {
-            _errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
-        }
-        [_errorHandler handleError:error];
+    if (!builder) {
         return nil;
     }
+    
+    self = [super init];
+    if (self != nil) {
+        _bucketer = builder.bucketer;
+        _config = builder.config;
+        _datafileManager = builder.datafileManager;
+        _eventBuilder = builder.eventBuilder;
+        _eventDispatcher = builder.eventDispatcher;
+        _errorHandler = builder.errorHandler;
+        _logger = builder.logger;
+        _userProfile = builder.userProfile;
+    }
+    return self;
 }
 
 - (OPTLYVariation *)activateExperiment:(NSString *)experimentKey

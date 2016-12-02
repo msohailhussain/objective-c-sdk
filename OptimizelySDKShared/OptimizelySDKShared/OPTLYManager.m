@@ -39,42 +39,22 @@
 }
 
 - (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
-    if (builder != nil) {
-        self = [super init];
-        if (self != nil) {
-            if (builder.projectId == nil) {
-                [builder.logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
-                                 withLevel:OptimizelyLogLevelError];
-                return nil;
-            }
-            _datafile = builder.datafile;
-            _datafileManager = builder.datafileManager;
-            _errorHandler = builder.errorHandler;
-            _eventDispatcher = builder.eventDispatcher;
-            _logger = builder.logger;
-            _projectId = builder.projectId;
-            _userProfile = builder.userProfile;
-        }
-        return self;
-    }
-    else {
-        if (_logger == nil) {
-            _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
-        }
-        [_logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
-                  withLevel:OptimizelyLogLevelError];
-        
-        NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                             code:OPTLYErrorTypesBuilderInvalid
-                                         userInfo:@{NSLocalizedDescriptionKey :
-                                                        [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesManagerBuilderInvalid, nil)]}];
-        
-        if (_errorHandler == nil) {
-            _errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
-        }
-        [_errorHandler handleError:error];
+    
+    if (!builder) {
         return nil;
     }
+
+    self = [super init];
+    if (self != nil) {
+        _datafile = builder.datafile;
+        _datafileManager = builder.datafileManager;
+        _errorHandler = builder.errorHandler;
+        _eventDispatcher = builder.eventDispatcher;
+        _logger = builder.logger;
+        _projectId = builder.projectId;
+        _userProfile = builder.userProfile;
+    }
+    return self;
 }
 
 - (OPTLYClient *)initializeClient {

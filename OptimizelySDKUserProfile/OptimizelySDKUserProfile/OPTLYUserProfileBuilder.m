@@ -14,6 +14,8 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
+#import <OptimizelySDKCore/OPTLYErrorHandler.h>
+#import <OptimizelySDKCore/OPTLYLogger.h>
 #import "OPTLYUserProfileBuilder.h"
 
 @implementation OPTLYUserProfileBuilder
@@ -27,18 +29,28 @@
 }
 
 - (id)initWithBlock:(OPTLYUserProfileBuilderBlock)block {
+    NSParameterAssert(block);
+    
     self = [super init];
     if (self != nil) {
         block(self);
     }
-    return self;
-}
-
-- (id<OPTLYLogger>)logger {
-    if (!_logger) {
-        _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
+    
+    // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+    // set the default logger first!
+    if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
+        NSString *logMessage = _logger ? @"[USER PROFILE BUILDER] Invalid logger handler provided." : @"[USER PROFILE BUILDER] No logger handler provided.";
+        _logger = [OPTLYLoggerDefault new];
+        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
     }
-    return _logger;
+    
+    if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
+        NSString *logMessage = _errorHandler ? @"[USER PROFILE BUILDER] Invalid error handler provided." : @"[USER PROFILE BUILDER] No error handler provided.";
+        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        _errorHandler = [OPTLYErrorHandlerNoOp new];
+    }
+    
+    return self;
 }
 
 @end

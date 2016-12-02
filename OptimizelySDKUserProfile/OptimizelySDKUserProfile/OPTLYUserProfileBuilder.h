@@ -16,6 +16,7 @@
 
 #import <Foundation/Foundation.h>
 #import <OptimizelySDKCore/OPTLYLogger.h>
+#import <OptimizelySDKCore/OPTLYErrorHandler.h>
 
 @interface OPTLYUserProfileBuilder : NSObject
 
@@ -30,6 +31,8 @@ typedef void (^OPTLYUserProfileBuilderBlock)(OPTLYUserProfileBuilder * _Nullable
  */
 + (nullable instancetype)builderWithBlock:(nonnull OPTLYUserProfileBuilderBlock)block;
 
+/// optional error handler
+@property (nonatomic, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// Logger provided by the user
 @property (nonatomic, strong, nullable) id<OPTLYLogger> logger;
 @end

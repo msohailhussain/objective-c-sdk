@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #import "OPTLYEventDispatcherBuilder.h"
+#import "OPTLYEventDispatcher.h"
 
 @implementation OPTLYEventDispatcherBuilder
 
@@ -27,10 +28,39 @@
 }
 
 - (id)initWithBlock:(OPTLYEventDispatcherBuilderBlock)block {
+    NSParameterAssert(block);
+    
     self = [super init];
     if (self != nil) {
         block(self);
     }
+    
+    // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+    // set the default logger first!
+    if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
+        NSString *logMessage = _logger ? @"[EVENT MANAGER BUILDER] Invalid logger handler provided." : @"[EVENT MANAGER BUILDER] No logger handler provided.";
+        _logger = [OPTLYLoggerDefault new];
+        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+    }
+    
+    if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
+        NSString *logMessage = _errorHandler ? @"[EVENT MANAGER BUILDER] Invalid error handler provided." : @"[EVENT MANAGER BUILDER] No error handler provided.";
+        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        _errorHandler = [OPTLYErrorHandlerNoOp new];
+    }
+    
+    if (_eventDispatcherDispatchInterval < 0) {
+        _eventDispatcherDispatchInterval = OPTLYEventDispatcherDefaultDispatchIntervalTime_ms;
+        NSString *logMessage =  [NSString stringWithFormat: OPTLYLoggerMessagesEventDispatcherInvalidInterval, _eventDispatcherDispatchInterval];
+        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+    }
+    
+    if (_eventDispatcherDispatchTimeout < 0) {
+        _eventDispatcherDispatchTimeout = OPTLYEventDispatcherDefaultDispatchTimeout_ms;
+        [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesDatafileFetchIntervalInvalid, _eventDispatcherDispatchTimeout]
+                      withLevel:OptimizelyLogLevelWarning];
+    }
+    
     return self;
 }
 

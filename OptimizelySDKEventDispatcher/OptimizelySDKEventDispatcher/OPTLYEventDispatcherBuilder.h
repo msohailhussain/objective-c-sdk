@@ -15,7 +15,8 @@
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <OptimizelySDKShared/OptimizelySDKShared.h>
+#import <OptimizelySDKCore/OPTLYErrorHandler.h>
+#import <OptimizelySDKCore/OPTLYLogger.h>
 
 /**
  * This class contains details related to how the Optimizely Event Dispatcher instance is built.
@@ -40,6 +41,8 @@ typedef void (^OPTLYEventDispatcherBuilderBlock)(OPTLYEventDispatcherBuilder * _
 @property (nonatomic, assign, readwrite) NSInteger eventDispatcherDispatchInterval;
 /// The timeout period in which the SDK will attempt to dispatch any events remaining in our events queue
 @property (nonatomic, assign, readwrite) NSInteger eventDispatcherDispatchTimeout;
+/// optional error handler
+@property (nonatomic, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// Logger provided by the user
 @property (nonatomic, strong, nullable) id<OPTLYLogger> logger;
 

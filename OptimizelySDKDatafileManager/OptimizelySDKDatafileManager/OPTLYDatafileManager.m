@@ -38,27 +38,25 @@ NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s = 120;
 }
 
 - (instancetype)initWithBuilder:(OPTLYDatafileManagerBuilder *)builder {
-    if (builder != nil) {
-        self = [super init];
-        if (self != nil) {
-            _datafileFetchInterval = OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
-            _datafileFetchInterval = builder.datafileFetchInterval;
-            _projectId = builder.projectId;
-            _errorHandler = builder.errorHandler;
-            _logger = builder.logger;
-            _networkService = [OPTLYNetworkService new];
-            _dataStore = [[OPTLYDataStore alloc] initWithLogger:_logger];
-            
-            // download datafile when we start the datafile manager
-            [self downloadDatafile:self.projectId completionHandler:nil];
-            [self setupNetworkTimer];
-            [self setupApplicationNotificationHandlers];
-        }
-        return self;
-    }
-    else {
+    if (!builder) {
         return nil;
     }
+    
+    self = [super init];
+    if (self != nil) {
+        _datafileFetchInterval = builder.datafileFetchInterval;
+        _projectId = builder.projectId;
+        _errorHandler = builder.errorHandler;
+        _logger = builder.logger;
+        _networkService = [OPTLYNetworkService new];
+        _dataStore = [[OPTLYDataStore alloc] initWithLogger:_logger];
+        
+        // download datafile when we start the datafile manager
+        [self downloadDatafile:self.projectId completionHandler:nil];
+        [self setupNetworkTimer];
+        [self setupApplicationNotificationHandlers];
+    }
+    return self;
 }
 
 - (void)downloadDatafile:(NSString *)projectId completionHandler:(OPTLYHTTPRequestManagerResponse)completion {
@@ -75,37 +73,37 @@ NSTimeInterval const OPTLYDatafileManagerDatafileFetchIntervalDefault_s = 120;
                                  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                  NSInteger statusCode = [httpResponse statusCode];
                                  NSString *logMessage = @"";
-                                 if (error != nil) {
-                                     [self.errorHandler handleError:error];
-                                 }
-                                 else if (statusCode == 200) { // got datafile OK
-                                     [self saveDatafile:data];
-                                     
-                                     // save the last modified date
-                                     NSDictionary *dictionary = [httpResponse allHeaderFields];
-                                     NSString *lastModifiedDate = [dictionary valueForKey:@"Last-Modified"];
-                                     [self saveLastModifiedDate:lastModifiedDate project:projectId];
-                                     
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloaded, projectId, lastModifiedDate];
-                                     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
-                                 }
-                                 else if (statusCode == 304) {
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges, projectId];
-                                     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
-                                 }
-                                 else {
-                                     // TODO: Josh W. handle bad response
-                                     logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError, projectId, error];
-                                     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
-                                 }
-                                 
-                                 
-                                 
-                                 // call the completion handler
-                                 if (completion != nil) {
-                                     completion(data, response, error);
-                                 }
-                             }];
+         if (error != nil) {
+             [self.errorHandler handleError:error];
+         }
+         else if (statusCode == 200) { // got datafile OK
+             [self saveDatafile:data];
+             
+             // save the last modified date
+             NSDictionary *dictionary = [httpResponse allHeaderFields];
+             NSString *lastModifiedDate = [dictionary valueForKey:@"Last-Modified"];
+             [self saveLastModifiedDate:lastModifiedDate project:projectId];
+             
+             logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileDownloaded, projectId, lastModifiedDate];
+             [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
+         }
+         else if (statusCode == 304) {
+             logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges, projectId];
+             [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
+         }
+         else {
+             // TODO: Josh W. handle bad response
+             logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError, projectId, error];
+             [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelDebug];
+         }
+         
+         
+         
+         // call the completion handler
+         if (completion != nil) {
+             completion(data, response, error);
+         }
+     }];
 }
 
 - (void)downloadDatafile {

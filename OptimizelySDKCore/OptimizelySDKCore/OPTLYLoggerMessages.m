@@ -22,7 +22,7 @@ NSString *const OPTLYLoggerMessagesEventNotAssociatedWithExperiment = @"Event %@
 NSString *const OPTLYLoggerMessagesAttributeInvalidFormat = @"Provided attribute %@ is in an invalid format."; // added id parameter, changed to singular
 NSString *const OPTLYLoggerMessagesForcedBucketingFailed = @"Entity %@ is not in the datafile. Not activating user %@."; // changed text from from 'variation' to 'entity'
 NSString *const OPTLYLoggerMessagesDatafileFetchIntervalInvalid = @"A datafile fetch interval of %f is invalid. Please set a datafile fetch interval >= 0."; // invalid datafile fetch interval value
-NSString *const OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId = @"An Optimizely Manager instance must be initialized with a project ID";
+NSString *const OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId = @"Submodule must be initialized with a project ID";
 NSString *const OPTLYLoggerMessagesManagerBuilderNotValid = @"An Optimizely Manager instance was not able to be initialized because the OPTLYManagerBuilder object was invalid";
 
 // ---- warnings ----
@@ -143,6 +143,8 @@ NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedNoChanges
 NSString *const OPTLYLoggerMessagesDatafileManagerDatafileNotDownloadedError = @"[DATAFILE MANAGER] Datafile for project %@ NOT downloaded. Error received: %@.";
 NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDate = @"[DATAFILE MANAGER] Last modified date %@ found for project %@.";
 NSString *const OPTLYLoggerMessagesDatafileManagerLastModifedDateNotFound = @"[DATAFILE MANAGER] Last modified date not found for project %@.";
+
+// ---- Builder Classes ----
 
 @implementation OPTLYLoggerMessages
 

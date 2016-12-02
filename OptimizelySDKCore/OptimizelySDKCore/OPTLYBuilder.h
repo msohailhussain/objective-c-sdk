@@ -20,7 +20,7 @@
 @protocol OPTLYDatafileManager, OPTLYErrorHandler, OPTLYEventBuilder, OPTLYEventDispatcher, OPTLYLogger, OPTLYUserProfile;
 
 /**
- * This class contains the information on how your Optimizely instance will be built.
+ * This class contains the information on how the Optimizely instance will be built.
  */
 
 @class OPTLYBuilder;
@@ -38,6 +38,9 @@ typedef void (^OPTLYBuilderBlock)(OPTLYBuilder * _Nullable builder);
 @property (nonatomic, readonly, strong, nullable) OPTLYBucketer *bucketer;
 /// The event builder created by the builder.
 @property (nonatomic, readonly, strong, nullable) OPTLYEventBuilderDefault *eventBuilder;
+
+/// The datafile manager that will download the datafile for the manager
+@property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
 /// The error handler is by default set to one that is created by Optimizely. This default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// The event dispatcher is by default set to one that is created by Optimizely. This default event dispatcher can be overridden by any object that conforms to the OPTLYEventDispatcher protocol.
@@ -46,8 +49,6 @@ typedef void (^OPTLYBuilderBlock)(OPTLYBuilder * _Nullable builder);
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYLogger> logger;
 /// User profile stores user-specific data, like bucketing.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYUserProfile> userProfile;
-/// The datafile manager that will download the datafile for the manager
-@property (nonatomic, readwrite, strong, nullable) id<OPTLYDatafileManager> datafileManager;
 
 /// Create an Optimizely Builder object.
 + (nullable instancetype)builderWithBlock:(nonnull OPTLYBuilderBlock)block;

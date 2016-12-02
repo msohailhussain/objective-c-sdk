@@ -50,24 +50,8 @@ NSInteger const OPTLYEventDispatcherDefaultDispatchTimeout_ms = 10000;
         _flushEventBackoffRetries = 0;
         _flushEventCall = 0;
         _timer = nil;
-        _eventDispatcherDispatchInterval = OPTLYEventDispatcherDefaultDispatchIntervalTime_ms;
-        _eventDispatcherDispatchTimeout = OPTLYEventDispatcherDefaultDispatchTimeout_ms;
-
+        _errorHandler = builder.errorHandler;
         _logger = builder.logger;
-        
-        if (builder.eventDispatcherDispatchInterval > 0) {
-            _eventDispatcherDispatchInterval = builder.eventDispatcherDispatchInterval;
-        } else {
-            NSString *logMessage =  [NSString stringWithFormat: OPTLYLoggerMessagesEventDispatcherInvalidInterval, builder.eventDispatcherDispatchInterval];
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
-        }
-        
-        if (builder.eventDispatcherDispatchTimeout > 0) {
-            _eventDispatcherDispatchTimeout = builder.eventDispatcherDispatchTimeout;
-        } else {
-            NSString *logMessage =  [NSString stringWithFormat:OPTLYLoggerMessagesEventDispatcherInvalidTimeout, builder.eventDispatcherDispatchTimeout];
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
-        }
         
         _maxDispatchBackoffRetries = (_eventDispatcherDispatchInterval > 0) && (_eventDispatcherDispatchTimeout > 0) ? _eventDispatcherDispatchTimeout/_eventDispatcherDispatchInterval : 0;
         

@@ -54,16 +54,7 @@ NSString * const kClientEngine             = @"objective-c-sdk-core";
 }
 
 - (instancetype)initWithBuilder:(OPTLYProjectConfigBuilder *)builder {
-    
-    if (!builder.datafile) {
-        NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                             code:OPTLYErrorTypesDatafileInvalid
-                                         userInfo:@{NSLocalizedDescriptionKey :
-                                                        NSLocalizedString(OPTLYErrorHandlerMessagesDataFileInvalid, nil)}];
-        [_errorHandler handleError:error];
-        
-        NSString *logMessage = OPTLYErrorHandlerMessagesDataFileInvalid;
-        [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
+    if (!builder) {
         return nil;
     }
     
@@ -75,8 +66,7 @@ NSString * const kClientEngine             = @"objective-c-sdk-core";
         [_errorHandler handleException:datafileException];
     }
     
-    if (datafileError)
-    {
+    if (datafileError) {
         NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
                                              code:OPTLYErrorTypesDatafileInvalid
                                          userInfo:datafileError.userInfo];
@@ -84,52 +74,6 @@ NSString * const kClientEngine             = @"objective-c-sdk-core";
         return nil;
     }
     
-    if (builder.errorHandler) {
-        if ([OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[builder.errorHandler class]]) {
-            _errorHandler = (id<OPTLYErrorHandler, Ignore>)builder.errorHandler;
-        } else {
-            _errorHandler = [OPTLYErrorHandlerDefault new];
-            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                                 code:OPTLYErrorTypesErrorHandlerInvalid
-                                             userInfo:@{NSLocalizedDescriptionKey :
-                                                            NSLocalizedString(OPTLYErrorHandlerMessagesErrorHandlerInvalid, nil)}];
-            [_errorHandler handleError:error];
-            
-            NSString *logMessage = OPTLYErrorHandlerMessagesErrorHandlerInvalid;
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
-        }
-    }
-    
-    if (builder.logger) {
-        if ([builder.logger conformsToProtocol:@protocol(OPTLYLogger)]) {
-            _logger = (id<OPTLYLogger, Ignore>)builder.logger;
-        } else {
-            _logger = [OPTLYLoggerDefault new];
-            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                                 code:OPTLYErrorTypesLoggerInvalid
-                                             userInfo:@{NSLocalizedDescriptionKey :
-                                                            NSLocalizedString(OPTLYErrorHandlerMessagesLoggerInvalid, nil)}];
-            [_errorHandler handleError:error];
-            
-            NSString *logMessage = OPTLYErrorHandlerMessagesLoggerInvalid;
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
-        }
-    }
-    
-    if (builder.userProfile) {
-        if ([OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[builder.userProfile class]]) {
-            _userProfile = (id<OPTLYUserProfile, Ignore>)builder.userProfile;
-        } else {
-            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                                 code:OPTLYErrorTypesUserProfile
-                                             userInfo:@{NSLocalizedDescriptionKey :
-                                                            NSLocalizedString(OPTLYErrorHandlerMessagesUserProfileInvalid, nil)}];
-            [_errorHandler handleError:error];
-            
-            NSString *logMessage = OPTLYErrorHandlerMessagesUserProfileInvalid;
-            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];
-        }
-    }
     return self;
 }
 

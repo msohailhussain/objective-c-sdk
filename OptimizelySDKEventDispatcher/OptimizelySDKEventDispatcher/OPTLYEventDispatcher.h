@@ -45,7 +45,8 @@ typedef void (^OPTLYEventDispatcherResponse)(NSData * _Nullable data, NSURLRespo
 @property (nonatomic, assign, readonly) NSInteger eventDispatcherDispatchInterval;
 /// The time for which the SDK will attempt to continue re-trying an event dispatch (in ms)
 @property (nonatomic, assign, readonly) NSInteger eventDispatcherDispatchTimeout;
-
+/// optional error handler
+@property (nonatomic, strong, nullable) id<OPTLYErrorHandler> errorHandler;
 /// Logger provided by the user
 @property (nonatomic, strong, nullable) id<OPTLYLogger> logger;
 

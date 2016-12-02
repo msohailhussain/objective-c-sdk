@@ -37,62 +37,54 @@
     self = [super init];
     if (self != nil) {
         block(self);
-    
-        if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[self.datafileManager class]]) {
-            [_logger logMessage:@"[MANAGER BUILDER] Invalid datafile manager." withLevel:OptimizelyLogLevelWarning];
+        
+        // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+        // set the default logger first!
+        if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
+            NSString *logMessage = _logger ? @"[MANAGER BUILDER] Invalid logger handler provided." : @"[MANAGER BUILDER] No logger handler provided.";
+            _logger = [OPTLYLoggerDefault new];
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
         }
         
-        if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[self.errorHandler class]]) {
-            [_logger logMessage:@"[MANAGER BUILDER] Invalid error handler." withLevel:OptimizelyLogLevelWarning];
+        if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[_datafileManager class]]) {
+            NSString *logMessage = _datafileManager ? @"[MANAGER BUILDER] Invalid datafile manager provided." : @"[MANAGER BUILDER] No datafile manager provided.";
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            _datafileManager = [OPTLYDatafileManagerDefault new];
         }
         
-        if (![OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[self.eventDispatcher class]]) {
-            [_logger logMessage:@"[MANAGER BUILDER] Invalid event dispatcher manager." withLevel:OptimizelyLogLevelWarning];
+        if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
+            NSString *logMessage = _errorHandler ? @"[MANAGER BUILDER] Invalid error handler provided." : @"[MANAGER BUILDER] No error handler provided.";
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            _errorHandler = [OPTLYErrorHandlerNoOp new];
         }
         
-        if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[self.logger class]]) {
-            [_logger logMessage:@"[MANAGER BUILDER] Invalid logger handler." withLevel:OptimizelyLogLevelWarning];
+        if (![OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[_eventDispatcher class]]) {
+            NSString *logMessage = _eventDispatcher ? @"[MANAGER BUILDER] Invalid event dispatcher manager provided." : @"[MANAGER BUILDER] No event dispatcher manager provided.";
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            _eventDispatcher = [OPTLYEventDispatcherDefault new];
         }
         
-        if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[self.userProfile class]]) {
-            [_logger logMessage:@"[MANAGER BUILDER] Invalid user profile." withLevel:OptimizelyLogLevelWarning];
+        if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[_userProfile class]]) {
+            NSString *logMessage = _userProfile ? @"[MANAGER BUILDER] Invalid user profile provided." : @"[MANAGER BUILDER] No user profile provided.";
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            _userProfile = [OPTLYUserProfileNoOp new];
+        }
+        
+        if (_datafile == nil) {
+            [_logger logMessage:@"[MANAGER BUILDER] Invalid datafile. Optimizely client not created." withLevel:OptimizelyLogLevelError];
+            return nil;
+        }
+        
+        if (_projectId == nil) {
+            [_logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
+                      withLevel:OptimizelyLogLevelError];
+            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
+                                                                               code:OPTLYErrorTypesErrorHandlerInvalid
+                                                                           userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId, nil)}];
+            [_errorHandler handleError:error];
+            return nil;
         }
     }
     return self;
-}
-
-- (id<OPTLYDatafileManager>)datafileManager {
-    if (!_datafileManager) {
-        _datafileManager = [[OPTLYDatafileManagerDefault alloc] init];
-    }
-    return _datafileManager;
-}
-
-- (id<OPTLYErrorHandler>)errorHandler {
-    if (!_errorHandler) {
-        _errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
-    }
-    return _errorHandler;
-}
-
-- (id<OPTLYEventDispatcher>)eventDispatcher {
-    if (!_eventDispatcher) {
-        _eventDispatcher = [[OPTLYEventDispatcherDefault alloc] init];
-    }
-    return _eventDispatcher;
-}
-
-- (id<OPTLYLogger>)logger {
-    if (!_logger) {
-        _logger = [[OPTLYLoggerDefault alloc] init];
-    }
-    return _logger;
-}
-
-- (id<OPTLYUserProfile>)userProfile {
-    if (!_userProfile) {
-        _userProfile = [[OPTLYUserProfileNoOp alloc] init];
-    }
-    return _userProfile;
 }
 @end

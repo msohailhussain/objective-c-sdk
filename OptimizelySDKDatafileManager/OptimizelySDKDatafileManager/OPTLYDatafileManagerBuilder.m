@@ -16,9 +16,7 @@
 
 #import <OptimizelySDKCore/OPTLYErrorHandler.h>
 #import <OptimizelySDKCore/OPTLYLogger.h>
-#import <OptimizelySDKCore/OPTLYLoggerMessages.h>
 #import "OPTLYDatafileManager.h"
-#import "OPTLYDatafileManagerBuilder.h"
 
 @implementation OPTLYDatafileManagerBuilder
 
@@ -35,40 +33,38 @@
     self = [super init];
     if (self != nil) {
         block(self);
-        if (_datafileFetchInterval < 0) {
-            [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesDatafileFetchIntervalInvalid, _datafileFetchInterval]
-                          withLevel:OptimizelyLogLevelError];
+        
+        // ---- Set default values if no submodule is provided or the submodule provided is invliad ----
+        // set the default logger first!
+        if (![OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
+            NSString *logMessage = _logger ? @"[DATAFILE MANAGER BUILDER] Invalid logger handler provided." : @"[DATAFILE MANAGER BUILDER] No logger handler provided.";
+            _logger = [OPTLYLoggerDefault new];
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+        }
+        
+        if (![OPTLYErrorHandlerUtility conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
+            NSString *logMessage = _errorHandler ? @"[DATAFILE MANAGER BUILDER] Invalid error handler provided." : @"[DATAFILE MANAGER BUILDER] No error handler provided.";
+            [_logger logMessage:logMessage withLevel:OptimizelyLogLevelWarning];
+            _errorHandler = [OPTLYErrorHandlerNoOp new];
+        }
+        
+        if (_projectId == nil) {
+            [_logger logMessage:OPTLYDatafileManagerInitializedWithoutProjectIdMessage
+                      withLevel:OptimizelyLogLevelError];
+            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
+                                                 code:OPTLYErrorTypesErrorHandlerInvalid
+                                             userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId, nil)}];
+            [_errorHandler handleError:error];
             return nil;
         }
-        if (_projectId == nil) {
-            [self.logger logMessage:OPTLYDatafileManagerInitializedWithoutProjectIdMessage
+        
+        if (_datafileFetchInterval < 0) {
+            _datafileFetchInterval = OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
+            [self.logger logMessage:[NSString stringWithFormat:OPTLYLoggerMessagesDatafileFetchIntervalInvalid, _datafileFetchInterval]
                           withLevel:OptimizelyLogLevelWarning];
-            return nil;
         }
     }
     return self;
-}
-
-- (NSTimeInterval)datafileFetchInterval {
-    if (!_datafileFetchInterval) {
-        // set default datafile Fetch interval to 0 so we never poll for the datafile
-        _datafileFetchInterval = OPTLYDatafileManagerDatafileFetchIntervalDefault_s;
-    }
-    return _datafileFetchInterval;
-}
-
-- (id<OPTLYLogger>)logger {
-    if (!_logger) {
-        _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
-    }
-    return _logger;
-}
-
-- (id<OPTLYErrorHandler>)errorHandler {
-    if (!_errorHandler) {
-        _errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
-    }
-    return _errorHandler;
 }
 
 @end
