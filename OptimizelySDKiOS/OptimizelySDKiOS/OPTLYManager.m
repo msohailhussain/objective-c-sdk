@@ -26,10 +26,38 @@ static NSString * const kClientEngine = @"objective-c-sdk-iOS";
 
 @implementation OPTLYManager
 
+
++ (instancetype)init:(OPTLYManagerBuilderBlock)block {
+    return [OPTLYManager initWithBuilder:[OPTLYManagerBuilder builderWithBlock:block]];
+}
+
++ (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
+    return [[self alloc] initWithBuilder:builder];
+}
+
+- (instancetype)init {
+    return [self initWithBuilder:nil];
+}
+
 - (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
     self = [super init];
     if (self != nil) {
+
+        // --- logger ---
+        if (!builder.logger) {
+            self.logger = [OPTLYLoggerDefault new];
+        } else {
+            self.logger = builder.logger;
+        }
         
+        // --- error handler ---
+        if (!builder.errorHandler) {
+            self.errorHandler = [OPTLYErrorHandlerNoOp new];
+        } else {
+            self.errorHandler = builder.errorHandler;
+        }
+        
+        // check if the builder is nil
         if (!builder) {
             [self.logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
                           withLevel:OptimizelyLogLevelError];
@@ -43,52 +71,52 @@ static NSString * const kClientEngine = @"objective-c-sdk-iOS";
             return nil;
         }
         
-        // set the datafile manager
-        if (self.datafileManager) {
-            if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[self.datafileManager class]]) {
-                return nil;
-            } else {
-                // set default datafile manager if no datafile manager is set
-                self.datafileManager = [OPTLYDatafileManagerDefault init:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
-                    builder.projectId = self.projectId;
-                    builder.errorHandler = self.errorHandler;
-                    builder.logger = self.logger;
-                }];
-            }
-        }
-        
-        // set event dispatcher
-        if (self.eventDispatcher) {
-            if ([OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[self.eventDispatcher class]]) {
-                return nil;
-            }
-        } else {
-            // set default event dispatcher if no event dispatcher is set
-            self.eventDispatcher = [OPTLYEventDispatcherDefault initWithBuilderBlock:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
+        // --- datafile manager ---
+        if (!builder.datafileManager) {
+            // set default datafile manager if no datafile manager is set
+            self.datafileManager = [OPTLYDatafileManagerDefault init:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
+                builder.projectId = self.projectId;
+                builder.errorHandler = self.errorHandler;
                 builder.logger = self.logger;
             }];
+        } else {
+            self.datafileManager = builder.datafileManager;
         }
         
-        // set user profile
-        if (self.userProfile) {
-            if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[self.userProfile class]]) {
-                return nil;
-            } else {
-                // set default user profile if no user profile is set
-                self.userProfile = [OPTLYUserProfileDefault initWithBuilderBlock:^(OPTLYUserProfileBuilder * _Nullable builder) {
-                    builder.logger = self.logger;
-                }];
-            }
+        // --- event dispatcher ---
+        if (!builder.eventDispatcher) {
+            // set default event dispatcher if no event dispatcher is set
+            self.eventDispatcher = [OPTLYEventDispatcherDefault init:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
+                builder.logger = self.logger;
+            }];
+        } else {
+            self.eventDispatcher = builder.eventDispatcher;
         }
         
-        // set client engine and client version
-        if (!self.clientEngine) {
+        // --- user profile ---
+        if (!builder.userProfile) {
+            // set default user profile if no user profile is set
+            self.userProfile = [OPTLYUserProfileDefault init:^(OPTLYUserProfileBuilder * _Nullable builder) {
+                builder.logger = self.logger;
+            }];
+        } else {
+            self.userProfile = builder.userProfile;
+        }
+        
+        // --- project id ---
+        self.projectId = builder.projectId;
+        
+        // --- client engine ---
+        if (!builder.clientEngine) {
             self.clientEngine = kClientEngine;
         }
-        if (!self.clientVersion) {
+        
+        // --- client version ---
+        if (!builder.clientVersion) {
             self.clientVersion = OPTIMIZELY_SDK_iOS_VERSION;
         }
     }
     return self;
 }
+
 @end

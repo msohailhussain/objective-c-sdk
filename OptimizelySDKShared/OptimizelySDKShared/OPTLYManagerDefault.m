@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -30,87 +30,12 @@
 
 @implementation OPTLYManagerDefault
 
-+ (instancetype)init:(OPTLYManagerBuilderBlock)block {
-    return [OPTLYManagerDefault initWithBuilder:[OPTLYManagerBuilder builderWithBlock:block]];
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"projectId: %@ \nclientEngine: %@\nclientVersion: %@\ndatafile:%@\nlogger:%@\nerrorHandler:%@\ndatafileManager:%@\neventDispatcher:%@\nuserProfile:%@", self.projectId, self.clientEngine, self.clientVersion, self.datafile, self.logger, self.errorHandler, self.datafileManager, self.eventDispatcher, self.userProfile];
 }
 
-+ (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
-    return [[self alloc] initWithBuilder:builder];
-}
-
-- (instancetype)init {
-    return [self initWithBuilder:nil];
-}
-
-- (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
-    self = [super init];
-    if (self != nil) {
-        
-        // set the logger
-        if (_logger) {
-            if ([OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
-                return nil;
-            }
-        } else {
-            // set the default logger if no logger is set
-            _logger = [OPTLYLoggerDefault new];
-        }
-        
-        // set the error handler
-        if (_errorHandler) {
-            if ([OPTLYErrorHandler conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
-                return nil;
-            } else {
-                // set the default error handler if no error handler is set
-                _errorHandler = [OPTLYErrorHandlerNoOp new];
-            }
-        }
-        
-        if (!builder) {
-            [_logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
-                      withLevel:OptimizelyLogLevelError];
-            
-            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                                 code:OPTLYErrorTypesBuilderInvalid
-                                             userInfo:@{NSLocalizedDescriptionKey :
-                                                            [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesManagerBuilderInvalid, nil)]}];
-            [_errorHandler handleError:error];
-            
-            return nil;
-        }
-        
-        if (_datafileManager) {
-            if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[_datafileManager class]]) {
-                return nil;
-            } else {
-                _datafileManager = [OPTLYDatafileManagerBasic new];
-            }
-        }
-        
-        if (_eventDispatcher) {
-            if ([OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[_eventDispatcher class]]) {
-                return nil;
-            }
-        } else {
-            _eventDispatcher = [OPTLYEventDispatcherBasic new];
-        }
-        
-        if (_projectId == nil) {
-            [_logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
-                      withLevel:OptimizelyLogLevelError];
-            return nil;
-        }
-        
-        if ([_projectId isEqualToString:@""]) {
-            [_logger logMessage:OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString
-                      withLevel:OptimizelyLogLevelError];
-            return nil;
-        }
-    }
-    return self;
-}
-
-// ---- Client ----
+#pragma mark - Client Getters
 
 - (OPTLYClient *)initialize {
     OPTLYClient *client = [self initializeClientWithManagerSettingsAndDatafile:self.datafile];

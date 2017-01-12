@@ -17,6 +17,5 @@
 #import <Foundation/Foundation.h>
 #import <OptimizelySDKShared/OPTLYManagerDefault.h>
 
-@interface OPTLYManager : OPTLYManagerDefault
-+ (nullable instancetype)init:(nonnull OPTLYManagerBuilderBlock)builderBlock;
+@interface OPTLYManager : OPTLYManagerDefault<OPTLYManager>
 @end

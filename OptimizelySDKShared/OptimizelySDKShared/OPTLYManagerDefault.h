@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -18,6 +18,15 @@
 #import "OPTLYManagerBuilder.h"
 
 @class OPTLYClient;
+
+@protocol OPTLYManager
+/**
+ * Init with builder block
+ * @param builderBlock The Optimizely Manager Builder Block where datafile manager, event dispatcher, and other configurations will be set.
+ * @return OptimizelyManager instance
+ */
++ (nullable instancetype)init:(nonnull OPTLYManagerBuilderBlock)builderBlock;
+@end
 
 @interface OPTLYManagerDefault : NSObject
 
@@ -39,13 +48,6 @@
 @property (nonatomic, readwrite, strong, nonnull) NSString *clientEngine;
 /// The client version
 @property (nonatomic, readwrite, strong, nonnull) NSString *clientVersion;
-
-/**
- * Init with builder block
- * @param builderBlock The Optimizely Manager Builder Block where datafile manager, event dispatcher, and other configurations will be set.
- * @return OptimizelyManager instance
- */
-+ (nullable instancetype)init:(nonnull OPTLYManagerBuilderBlock)builderBlock;
 
 /*
  * Synchronous call that would retrieve the datafile from local cache. If it fails to load from local cache it will return a dummy instance

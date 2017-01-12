@@ -26,71 +26,96 @@ static NSString * const kClientEngine = @"objective-c-sdk-tvOS";
 
 @implementation OPTLYManager
 
++ (instancetype)init:(OPTLYManagerBuilderBlock)block {
+    return [OPTLYManager initWithBuilder:[OPTLYManagerBuilder builderWithBlock:block]];
+}
+
++ (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
+    return [[self alloc] initWithBuilder:builder];
+}
+
+- (instancetype)init {
+    return [self initWithBuilder:nil];
+}
+
 - (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
     self = [super init];
     if (self != nil) {
         
+        // --- logger ---
+        if (!builder.logger) {
+            self.logger = [OPTLYLoggerDefault new];
+        } else {
+            self.logger = builder.logger;
+        }
+        
+        // --- error handler ---
+        if (!builder.errorHandler) {
+            self.errorHandler = [OPTLYErrorHandlerNoOp new];
+        } else {
+            self.errorHandler = builder.errorHandler;
+        }
+        
+        // check if the builder is nil
         if (!builder) {
-            [_logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
-                      withLevel:OptimizelyLogLevelError];
+            [self.logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
+                          withLevel:OptimizelyLogLevelError];
             
             NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
                                                  code:OPTLYErrorTypesBuilderInvalid
                                              userInfo:@{NSLocalizedDescriptionKey :
                                                             [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesManagerBuilderInvalid, nil)]}];
-            [_errorHandler handleError:error];
+            [self.errorHandler handleError:error];
             
             return nil;
         }
         
-        // set the datafile manager
-        if (_datafileManager) {
-            if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[_datafileManager class]]) {
-                return nil;
-            } else {
-                // set default datafile manager if no datafile manager is set
-                _datafileManager = [OPTLYDatafileManagerDefault initWithBuilderBlock:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
-                    builder.projectId = _projectId;
-                    builder.errorHandler = _errorHandler;
-                    builder.logger = _logger;
-                }];
-            }
-        }
-        
-        // set event dispatcher
-        if (_eventDispatcher) {
-            if ([OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[_eventDispatcher class]]) {
-                return nil;
-            }
-        } else {
-            // set default event dispatcher if no event dispatcher is set
-            _eventDispatcher = [OPTLYEventDispatcherDefault initWithBuilderBlock:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
-                builder.logger = _logger;
+        // --- datafile manager ---
+        if (!builder.datafileManager) {
+            // set default datafile manager if no datafile manager is set
+            self.datafileManager = [OPTLYDatafileManagerDefault init:^(OPTLYDatafileManagerBuilder * _Nullable builder) {
+                builder.projectId = self.projectId;
+                builder.errorHandler = self.errorHandler;
+                builder.logger = self.logger;
             }];
+        } else {
+            self.datafileManager = builder.datafileManager;
         }
         
-        // set user profile
-        if (_userProfile) {
-            if (![OPTLYUserProfileUtility conformsToOPTLYUserProfileProtocol:[_userProfile class]]) {
-                return nil;
-            } else {
-                // set default user profile if no user profile is set
-                _userProfile = [OPTLYUserProfileDefault initWithBuilderBlock:^(OPTLYUserProfileBuilder * _Nullable builder) {
-                    builder.logger = _logger;
-                }];
-            }
+        // --- event dispatcher ---
+        if (!builder.eventDispatcher) {
+            // set default event dispatcher if no event dispatcher is set
+            self.eventDispatcher = [OPTLYEventDispatcherDefault init:^(OPTLYEventDispatcherBuilder * _Nullable builder) {
+                builder.logger = self.logger;
+            }];
+        } else {
+            self.eventDispatcher = builder.eventDispatcher;
         }
         
-        // set client engine and client version
-        if (!_clientEngine) {
-            _clientEngine = kClientEngine;
+        // --- user profile ---
+        if (!builder.userProfile) {
+            // set default user profile if no user profile is set
+            self.userProfile = [OPTLYUserProfileDefault init:^(OPTLYUserProfileBuilder * _Nullable builder) {
+                builder.logger = self.logger;
+            }];
+        } else {
+            self.userProfile = builder.userProfile;
         }
         
-        if (!_clientVersion) {
-            _clientVersion = OPTIMIZELY_SDK_TVOS_VERSION;
+        // --- project id ---
+        self.projectId = builder.projectId;
+        
+        // --- client engine ---
+        if (!builder.clientEngine) {
+            self.clientEngine = kClientEngine;
+        }
+        
+        // --- client version ---
+        if (!builder.clientVersion) {
+            self.clientVersion = OPTIMIZELY_SDK_TVOS_VERSION;
         }
     }
     return self;
 }
 
-@end
+    @end
