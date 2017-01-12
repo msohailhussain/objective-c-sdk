@@ -22,10 +22,79 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
+    var optimizelyClient : OPTLYClient?
+    
+    // Optimizely SDK test parameters
+    let userId = "1234"
+    let revenue = NSNumber(value: 88)
+    let eventDispatcherDispatchInterval = 1000
+    let datafileManagerDownloadInterval = 20000
+    
+    // default parameters for initializing Optimizely from saved datafile
+    let datafileName = "iOSDemoTestData"
+    var projectId = "8038273325"
+    var attributes = ["buyerType" : "frequent"]
+    var eventKey = "event1"
+    var experimentKey = "checkoutButtonTextExp"
+    var downloadDatafile = false
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        return true
+        
+        // create the event dispatcher
+        let eventDispatcher = OPTLYEventDispatcherDefault.initWithBuilderBlock{(builder)in
+            builder?.eventDispatcherDispatchInterval = self.eventDispatcherDispatchInterval
+        }
+        
+        // create the datafile manager
+        let datafileManager = OPTLYDatafileManagerDefault.init{(builder) in
+            builder!.datafileFetchInterval = TimeInterval(self.datafileManagerDownloadInterval)
+            builder!.projectId = self.projectId
+        }
+        let optimizelyManager = OPTLYManager.init { (builder) in
+            builder!.projectId = self.projectId
+            builder!.datafileManager = datafileManager!
+            builder!.eventDispatcher = eventDispatcher
+        }
+        
+        // use different parameters if initializing Optimizely from downloaded datafile
+        if self.downloadDatafile == true {
+            
+            // initialize Optimizely Client from a datafile download
+            optimizelyManager?.initialize(callback: { [weak self] (error, optimizelyClient) in
+                self?.optimizelyClient = optimizelyClient;
+                let variation = self?.optimizelyClient?.activate(self!.experimentKey, userId: self!.userId, attributes: self!.attributes)
+                if (variation != nil) {
+                    print("bucketed variation:", variation!.variationKey)
+                }
+                self?.optimizelyClient?.track(self!.eventKey, userId: self!.userId, attributes: self!.attributes, eventValue: self!.revenue)
+            })
+        } else {
+            
+            // get the datafile
+            let bundle = Bundle.init(for: self.classForCoder)
+            let filePath = bundle.path(forResource: datafileName, ofType: "json")
+            var jsonDatafile: Data? = nil
+            do {
+                let fileContents = try String.init(contentsOfFile: filePath!, encoding: String.Encoding.utf8)
+                jsonDatafile = fileContents.data(using: String.Encoding.utf8)!
+            }
+            catch {
+                print("invalid JSON Data")
+            }
+            
+            // initialize Optimizely Client from a saved datafile
+            let optimizelyClient = optimizelyManager?.initialize(withDatafile:jsonDatafile!)
+            let variation = optimizelyClient?.activate(experimentKey, userId: userId, attributes: attributes)
+            if (variation != nil) {
+                print("bucketed variation:", variation!.variationKey)
+            }
+            optimizelyClient?.track(eventKey, userId: userId, attributes: attributes, eventValue:  revenue)
+        }
+        
+        
+        return true;
     }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

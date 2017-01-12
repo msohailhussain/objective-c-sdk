@@ -35,21 +35,6 @@
     self = [super init];
     if (self != nil) {
         block(self);
-        if (!self.datafileManager) {
-            self.datafileManager = [[OPTLYDatafileManagerBasic alloc] init];
-        }
-        else if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[self.datafileManager class]]) {
-            return nil;
-        }
-        if (!self.errorHandler) {
-            self.errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
-        }
-        if (!self.eventDispatcher) {
-            self.eventDispatcher = [[OPTLYEventDispatcherBasic alloc] init];
-        }
-        if (!self.logger) {
-            self.logger = [[OPTLYLoggerDefault alloc] init];
-        }
     }
     return self;
 }

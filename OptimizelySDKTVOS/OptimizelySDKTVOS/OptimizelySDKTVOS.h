@@ -17,7 +17,7 @@
 #import <OptimizelySDKEventDispatcher/OptimizelySDKEventDispatcher.h>
 #import <OptimizelySDKUserProfile/OptimizelySDKUserProfile.h>
 #import <OptimizelySDKDatafileManager/OptimizelySDKDatafileManager.h>
-#import "OPTLYTVOSManagerBuilder.h"
+#import "OPTLYManager.h"
 
 //! Project version number for OptimizelySDKTVOS.
 FOUNDATION_EXPORT double OptimizelySDKTVOSVersionNumber;

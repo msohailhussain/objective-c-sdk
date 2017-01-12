@@ -24,7 +24,7 @@
 #import "OPTLYDataStore.h"
 #import "OPTLYDatafileManager.h"
 #import "OPTLYFileManager.h"
-#import "OPTLYManager.h"
+#import "OPTLYManagerDefault.h"
 #import "OPTLYManagerBuilder.h"
 
 //! Project version number for OptimizelySDKShared.

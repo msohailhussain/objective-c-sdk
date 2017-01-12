@@ -50,8 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             builder!.datafileFetchInterval = TimeInterval(self.datafileManagerDownloadInterval)
             builder!.projectId = self.projectId
         }
-        
-        let optimizelyManager = OPTLYManager.init {(builder) in
+        let optimizelyManager = OPTLYManager.init { (builder) in
             builder!.projectId = self.projectId
             builder!.datafileManager = datafileManager!
             builder!.eventDispatcher = eventDispatcher

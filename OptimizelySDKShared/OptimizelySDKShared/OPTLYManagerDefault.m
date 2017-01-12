@@ -15,23 +15,23 @@
  ***************************************************************************/
 
 #import <OptimizelySDKCore/OPTLYErrorHandler.h>
+#import <OptimizelySDKCore/OPTLYEventDispatcher.h>
 #import <OptimizelySDKCore/OPTLYLogger.h>
 #import <OptimizelySDKCore/OPTLYLoggerMessages.h>
-#import <OptimizelySDKShared/OPTLYManagerBuilder.h>
 #import <OptimizelySDKCore/OPTLYNetworkService.h>
 #import "OPTLYClient.h"
 #import "OPTLYDatafileManager.h"
-#import "OPTLYManager.h"
+#import "OPTLYManagerDefault.h"
 #import "OPTLYManagerBuilder.h"
 
-@interface OPTLYManager()
+@interface OPTLYManagerDefault()
 @property (strong, readwrite, nonatomic, nullable) OPTLYClient *optimizelyClient;
 @end
 
-@implementation OPTLYManager
+@implementation OPTLYManagerDefault
 
-+ (instancetype)init:(OPTLYManagerBuilderBlock)builderBlock {
-    return [OPTLYManager initWithBuilder:[OPTLYManagerBuilder builderWithBlock:builderBlock]];
++ (instancetype)init:(OPTLYManagerBuilderBlock)block {
+    return [OPTLYManagerDefault initWithBuilder:[OPTLYManagerBuilder builderWithBlock:block]];
 }
 
 + (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
@@ -43,50 +43,74 @@
 }
 
 - (instancetype)initWithBuilder:(OPTLYManagerBuilder *)builder {
-    if (builder != nil) {
-        self = [super init];
-        if (self != nil) {
-            if (builder.projectId == nil) {
-                [builder.logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
-                                 withLevel:OptimizelyLogLevelError];
+    self = [super init];
+    if (self != nil) {
+        
+        // set the logger
+        if (_logger) {
+            if ([OPTLYLoggerUtility conformsToOPTLYLoggerProtocol:[_logger class]]) {
                 return nil;
             }
-            else if ([builder.projectId isEqualToString:@""]) {
-                [builder.logger logMessage:OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString
-                                 withLevel:OptimizelyLogLevelError];
+        } else {
+            // set the default logger if no logger is set
+            _logger = [OPTLYLoggerDefault new];
+        }
+        
+        // set the error handler
+        if (_errorHandler) {
+            if ([OPTLYErrorHandler conformsToOPTLYErrorHandlerProtocol:[_errorHandler class]]) {
+                return nil;
+            } else {
+                // set the default error handler if no error handler is set
+                _errorHandler = [OPTLYErrorHandlerNoOp new];
+            }
+        }
+        
+        if (!builder) {
+            [_logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
+                      withLevel:OptimizelyLogLevelError];
+            
+            NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
+                                                 code:OPTLYErrorTypesBuilderInvalid
+                                             userInfo:@{NSLocalizedDescriptionKey :
+                                                            [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesManagerBuilderInvalid, nil)]}];
+            [_errorHandler handleError:error];
+            
+            return nil;
+        }
+        
+        if (_datafileManager) {
+            if (![OPTLYDatafileManagerUtility conformsToOPTLYDatafileManagerProtocol:[_datafileManager class]]) {
+                return nil;
+            } else {
+                _datafileManager = [OPTLYDatafileManagerBasic new];
+            }
+        }
+        
+        if (_eventDispatcher) {
+            if ([OPTLYEventDispatcherUtility conformsToOPTLYEventDispatcherProtocol:[_eventDispatcher class]]) {
                 return nil;
             }
-            _datafile = builder.datafile;
-            _datafileManager = builder.datafileManager;
-            _errorHandler = builder.errorHandler;
-            _eventDispatcher = builder.eventDispatcher;
-            _logger = builder.logger;
-            _projectId = builder.projectId;
-            _userProfile = builder.userProfile;
-            _clientEngine = builder.clientEngine;
-            _clientVersion = builder.clientVersion;
+        } else {
+            _eventDispatcher = [OPTLYEventDispatcherBasic new];
         }
-        return self;
-    }
-    else {
-        if (_logger == nil) {
-            _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
-        }
-        [_logger logMessage:OPTLYLoggerMessagesManagerBuilderNotValid
-                  withLevel:OptimizelyLogLevelError];
         
-        NSError *error = [NSError errorWithDomain:OPTLYErrorHandlerMessagesDomain
-                                             code:OPTLYErrorTypesBuilderInvalid
-                                         userInfo:@{NSLocalizedDescriptionKey :
-                                                        [NSString stringWithFormat:NSLocalizedString(OPTLYErrorHandlerMessagesManagerBuilderInvalid, nil)]}];
-        
-        if (_errorHandler == nil) {
-            _errorHandler = [[OPTLYErrorHandlerNoOp alloc] init];
+        if (_projectId == nil) {
+            [_logger logMessage:OPTLYLoggerMessagesManagerMustBeInitializedWithProjectId
+                      withLevel:OptimizelyLogLevelError];
+            return nil;
         }
-        [_errorHandler handleError:error];
-        return nil;
+        
+        if ([_projectId isEqualToString:@""]) {
+            [_logger logMessage:OPTLYLoggerMessagesManagerProjectIdCannotBeEmptyString
+                      withLevel:OptimizelyLogLevelError];
+            return nil;
+        }
     }
+    return self;
 }
+
+// ---- Client ----
 
 - (OPTLYClient *)initialize {
     OPTLYClient *client = [self initializeClientWithManagerSettingsAndDatafile:self.datafile];
