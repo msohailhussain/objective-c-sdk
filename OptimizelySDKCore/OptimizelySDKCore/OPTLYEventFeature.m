@@ -15,9 +15,13 @@
  ***************************************************************************/
 
 #import "OPTLYEventFeature.h"
+#import "OPTLYEventParameterKeys.h"
 
 NSString * const OPTLYEventFeatureFeatureTypeCustomAttribute = @"custom";
 
 @implementation OPTLYEventFeature
-
++ (JSONKeyMapper*)keyMapper
+{
+    return [[JSONKeyMapper alloc] initWithDictionary:@{ OPTLYEventParameterKeysFeaturesId : @"featureId" }];
+}
 @end
