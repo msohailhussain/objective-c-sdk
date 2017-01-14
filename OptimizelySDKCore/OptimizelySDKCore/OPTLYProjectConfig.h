@@ -19,7 +19,7 @@
 #import "OPTLYProjectConfigBuilder.h"
 
 NS_ASSUME_NONNULL_BEGIN
-extern NSString * const kExpectedDatafileVersion;
+extern NSString * const OPTLYProjectConfigExpectedDatafileVersion;
 extern NSString * const OPTLYProjectConfigiOSClientEngine;
 extern NSString * const OPTLYProjectConfigTVOSClientEngine;
 NS_ASSUME_NONNULL_END

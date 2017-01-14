@@ -147,7 +147,7 @@ static NSString * const kInvalidDatafileVersionDatafileName = @"InvalidDatafileV
     NSAssert([projectConfig.accountId isEqualToString:kAccountId], @"Invalid account id.");
     
     // validate version number
-    NSAssert([projectConfig.version isEqualToString:kExpectedDatafileVersion], @"Invalid version number.");
+    NSAssert([projectConfig.version isEqualToString:OPTLYProjectConfigExpectedDatafileVersion], @"Invalid version number.");
     
     // validate revision number
     NSAssert([projectConfig.revision isEqualToString:kRevision], @"Invalid revision number.");

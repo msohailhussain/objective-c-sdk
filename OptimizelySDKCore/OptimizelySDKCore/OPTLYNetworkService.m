@@ -85,7 +85,7 @@ const NSInteger OPTLYNetworkServiceDatafileDownloadMaxBackoffRetryTimeInterval_m
 + (NSURL *)projectConfigURLPath:(NSString *)projectId
 {
     NSURL *cdnURL = [NSURL URLWithString:OPTLYNetworkServiceCDNServerURL];
-    NSString *filePath = [NSString stringWithFormat:@"%@%@/datafile_v%@.json", cdnURL.absoluteString, projectId, kExpectedDatafileVersion];
+    NSString *filePath = [NSString stringWithFormat:@"%@%@/datafile_v%@.json", cdnURL.absoluteString, projectId, OPTLYProjectConfigExpectedDatafileVersion];
     return [NSURL URLWithString:filePath];
 }
 

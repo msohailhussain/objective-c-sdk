@@ -28,7 +28,7 @@ static NSString *const kExpectedCDNURLTemplate = @"https://cdn.optimizely.com/pu
 @implementation OPTLYDatafileManagerTest
 
 - (void)testProjectConfigURLPathReturnsExpectedURL {
-    NSString *expectedURLString = [NSString stringWithFormat:kExpectedCDNURLTemplate, kProjectId, kExpectedDatafileVersion];
+    NSString *expectedURLString = [NSString stringWithFormat:kExpectedCDNURLTemplate, kProjectId, OPTLYProjectConfigExpectedDatafileVersion];
     NSURL *expectedURL = [NSURL URLWithString:expectedURLString];
     
     NSURL *cdnURL = [OPTLYDatafileManagerUtility projectConfigURLPath:kProjectId];
