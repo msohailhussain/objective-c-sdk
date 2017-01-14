@@ -54,7 +54,7 @@
 // The name of the event being logged
 @property (nonatomic, strong, nullable) NSString<Optional> *eventName;
 // Features attached to this event
-@property (nonatomic, strong, nonnull) NSArray<OPTLYEventFeature> *eventFeatures;
+@property (nonatomic, strong, nonnull) NSArray<OPTLYEventFeature, Optional> *eventFeatures;
 // The metrics associated with this event
 @property (nonatomic, strong, nullable) NSArray<OPTLYEventMetric, Optional> *eventMetrics;
 // Features attached to the user as chosen through customer config.

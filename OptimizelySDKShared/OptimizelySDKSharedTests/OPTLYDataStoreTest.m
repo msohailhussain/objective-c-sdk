@@ -105,7 +105,6 @@ static NSString * const kEventDispatcher = @"event-dispatcher";
       @"visitorId": @"1",
       @"eventName": @"people",
       @"clientEngine": @"objective-c-sdk-core",
-      @"eventFeatures": @[]
       };
     
     NSDictionary *testEventData2 =
@@ -131,7 +130,6 @@ static NSString * const kEventDispatcher = @"event-dispatcher";
       @"visitorId": @"2",
       @"eventName": @"people",
       @"clientEngine": @"objective-c-sdk-core",
-      @"eventFeatures": @[]
       };
     
     NSDictionary *testEventData3 =
@@ -157,7 +155,6 @@ static NSString * const kEventDispatcher = @"event-dispatcher";
       @"visitorId": @"3",
       @"eventName": @"people",
       @"clientEngine": @"objective-c-sdk-core",
-      @"eventFeatures": @[]
       };
     
     NSDictionary *testEventData4 =
@@ -183,7 +180,6 @@ static NSString * const kEventDispatcher = @"event-dispatcher";
       @"visitorId": @"4",
       @"eventName": @"people",
       @"clientEngine": @"objective-c-sdk-core",
-      @"eventFeatures": @[]
       };
     
     NSInteger totalEntity = 4;

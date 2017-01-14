@@ -121,7 +121,6 @@ NSString * const OPTLYEventBuilderEventTicketURL           = @"https://p13nlog.d
     [params addEntriesFromDictionary:commonParams];
     params[OPTLYEventParameterKeysEventEntityId] = StringOrEmpty([config getEventIdForKey:eventName]);
     params[OPTLYEventParameterKeysEventName] = StringOrEmpty(eventName);
-    params[OPTLYEventParameterKeysEventFeatures] = @[];
     params[OPTLYEventParameterKeysEventMetrics] = eventValue? @[[self createEventMetric:eventValue]] : @[];
     params[OPTLYEventParameterKeysLayerStates] = [self createLayerStates:config
                                                                 bucketer:bucketer
