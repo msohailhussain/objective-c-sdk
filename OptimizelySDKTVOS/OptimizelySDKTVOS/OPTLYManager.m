@@ -22,8 +22,6 @@
 #import <OptimizelySDKUserProfile/OPTLYUserProfile.h>
 #import "OPTLYManager.h"
 
-static NSString * const kClientEngine = @"tvOS-sdk";
-
 @implementation OPTLYManager
 
 + (instancetype)init:(OPTLYManagerBuilderBlock)block {
@@ -110,7 +108,7 @@ static NSString * const kClientEngine = @"tvOS-sdk";
         
         // --- client engine ---
         if (!builder.clientEngine) {
-            self.clientEngine = kClientEngine;
+            self.clientEngine = OPTLYProjectConfigTVOSClientEngine;
         } else {
             self.clientEngine = builder.clientEngine;
         }

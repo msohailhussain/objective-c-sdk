@@ -22,8 +22,6 @@
 #import <OptimizelySDKUserProfile/OPTLYUserProfile.h>
 #import "OPTLYManager.h"
 
-static NSString * const kClientEngine = @"iOS-sdk";
-
 @implementation OPTLYManager
 
 
@@ -111,7 +109,7 @@ static NSString * const kClientEngine = @"iOS-sdk";
         
         // --- client engine ---
         if (!builder.clientEngine) {
-            self.clientEngine = kClientEngine;
+            self.clientEngine = OPTLYProjectConfigiOSClientEngine;
         } else {
             self.clientEngine = builder.clientEngine;
         }

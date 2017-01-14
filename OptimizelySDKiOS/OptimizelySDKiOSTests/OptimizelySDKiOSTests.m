@@ -24,7 +24,6 @@
 static NSString *const defaultDatafileFileName = @"datafile_6372300739";
 static NSString *const kProjectId = @"6372300739";
 static NSString *const kLastModifiedDate = @"Mon, 28 Nov 2016 06:10:59 GMT";
-static NSString * const kClientEngine = @"objective-c-sdk-iOS";
 static NSData *kDefaultDatafile;
 static NSDictionary *kCDNResponseHeaders = nil;
 
@@ -96,7 +95,7 @@ static NSDictionary *kCDNResponseHeaders = nil;
     XCTAssertEqual(optimizely.userProfile, manager.userProfile);
     
     // test client engine and version were set correctly
-    XCTAssertEqualObjects([optimizely.config clientEngine], kClientEngine);
+    XCTAssertEqualObjects([optimizely.config clientEngine], OPTLYProjectConfigiOSClientEngine);
     XCTAssertEqualObjects([optimizely.config clientVersion], OPTIMIZELY_SDK_iOS_VERSION);
 }
 

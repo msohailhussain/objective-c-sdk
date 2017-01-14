@@ -20,6 +20,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 extern NSString * const kExpectedDatafileVersion;
+extern NSString * const OPTLYProjectConfigiOSClientEngine;
+extern NSString * const OPTLYProjectConfigTVOSClientEngine;
 NS_ASSUME_NONNULL_END
 
 @class OPTLYAttribute, OPTLYAudience, OPTLYBucketer, OPTLYEvent, OPTLYExperiment, OPTLYGroup, OPTLYVariation, OPTLYVariable;

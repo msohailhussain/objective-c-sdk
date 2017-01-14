@@ -31,6 +31,8 @@
 #import "OPTLYVariable.h"
 
 NSString * const kExpectedDatafileVersion  = @"3";
+NSString * const OPTLYProjectConfigiOSClientEngine = @"iOS-sdk";
+NSString * const OPTLYProjectConfigTVOSClientEngine = @"tvOS-sdk";
 
 @interface OPTLYProjectConfig()
 
@@ -124,8 +126,23 @@ NSString * const kExpectedDatafileVersion  = @"3";
         [builder.errorHandler handleException:datafileException];
     }
     
-    _clientEngine = builder.clientEngine;
-    _clientVersion = builder.clientVersion;
+    // --- client engine ---
+    if (!builder.clientEngine) {
+#if TARGET_OS_IOS
+        _clientEngine = OPTLYProjectConfigiOSClientEngine;
+#elif TARGET_OS_TV
+        _clientEngine = OPTLYProjectConfigTVOSClientEngine;
+#endif
+    } else {
+        _clientEngine = builder.clientEngine;
+    }
+    
+    // --- client version ---
+    if (!builder.clientVersion) {
+        _clientVersion = OPTIMIZELY_SDK_CORE_VERSION;
+    } else {
+        _clientVersion = builder.clientVersion;
+    }
     
     _errorHandler = (id<OPTLYErrorHandler, Ignore>)builder.errorHandler;
     _logger = (id<OPTLYLogger, Ignore>)builder.logger;
