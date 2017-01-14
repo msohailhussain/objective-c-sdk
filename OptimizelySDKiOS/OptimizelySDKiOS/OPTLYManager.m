@@ -22,7 +22,7 @@
 #import <OptimizelySDKUserProfile/OPTLYUserProfile.h>
 #import "OPTLYManager.h"
 
-static NSString * const kClientEngine = @"objective-c-sdk-iOS";
+static NSString * const kClientEngine = @"iOS-sdk";
 
 @implementation OPTLYManager
 
