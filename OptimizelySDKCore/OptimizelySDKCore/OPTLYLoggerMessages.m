@@ -28,7 +28,7 @@ NSString *const OPTLYLoggerMessagesConversionSuccess = @"[OPTIMIZELY] Tracking e
 NSString *const OPTLYLoggerMessagesBucketAssigned = @"[BUCKETER] Assigned bucket %@ to user %@.";
 // info
 NSString *const OPTLYLoggerMessagesForcedVariationUser = @"[BUCKETER] User %@ is forced in variation %@.";
-NSString *const OPTLYLoggerMessagesUserMutuallyExcluded = @"[BUCKETER] User %@ is excluded from the experiment."; // user id
+NSString *const OPTLYLoggerMessagesUserMutuallyExcluded = @"[BUCKETER] User %@ is not in experiment %@ of group %@."; // user id, experiment key, group ID
 // error
 NSString *const OPTLYLoggerMessagesForcedBucketingFailed = @"[BUCKETER] Entity %@ is not in the datafile. Not activating user %@."; // changed text from from 'variation' to 'entity'
 
