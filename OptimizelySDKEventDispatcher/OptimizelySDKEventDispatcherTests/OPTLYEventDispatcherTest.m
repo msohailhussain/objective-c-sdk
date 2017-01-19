@@ -148,11 +148,11 @@ typedef void (^EventDispatchCallback)(NSData * _Nullable data, NSURLResponse * _
 //  - all events should be flushed
 - (void)testFlushEventsWithSavedEventsSuccess {
     [self stubSuccessResponse];
-
+    
     [self.eventDispatcher.dataStore saveEvent:self.parameters
                                     eventType:OPTLYDataStoreEventTypeImpression
                                         error:nil];
-
+    
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Wait for testFlushEventsWithSavedEventsSuccess failure."];
     __weak typeof(self) weakSelf = self;
@@ -162,7 +162,7 @@ typedef void (^EventDispatchCallback)(NSData * _Nullable data, NSURLResponse * _
         XCTAssert([savedEvents count] == 0, @"No events should be saved: %lu.", [savedEvents count]);
         [expectation fulfill];
     }];
-
+    
     [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout error for testFlushEventsWithSavedEventsSuccess: %@", error);
@@ -266,7 +266,7 @@ typedef void (^EventDispatchCallback)(NSData * _Nullable data, NSURLResponse * _
         XCTAssert([savedEvents count] == 0, @"No events should have been saved.");
         [expectation fulfill];
     }];
-
+    
     [self waitForExpectationsWithTimeout:3.0 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout error for testDispatchNewEventSuccess: %@", error);
@@ -309,7 +309,7 @@ typedef void (^EventDispatchCallback)(NSData * _Nullable data, NSURLResponse * _
         builder.logger = [OPTLYLoggerDefault new];
     }];
     
-
+    
     [eventDispatcher.dataStore saveEvent:self.parameters
                                eventType:OPTLYDataStoreEventTypeConversion
                                    error:nil];
@@ -343,7 +343,7 @@ typedef void (^EventDispatchCallback)(NSData * _Nullable data, NSURLResponse * _
 }
 
 - (void)testMaxEventDispatchLimit
-{    
+{
     NSInteger maxNumberEvents = 10;
     OPTLYEventDispatcherDefault *eventDispatcher = [OPTLYEventDispatcherDefault init:^(OPTLYEventDispatcherBuilder *builder) {
         builder.maxNumberOfEventsToSave = maxNumberEvents;
