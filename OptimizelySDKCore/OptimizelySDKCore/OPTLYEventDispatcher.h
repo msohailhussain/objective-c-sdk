@@ -26,6 +26,7 @@
  */
 
 - (void)dispatchImpressionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback;
 
 /**
@@ -34,6 +35,7 @@
  * @param callback The completion handler
  */
 - (void)dispatchConversionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback;
 
 @end

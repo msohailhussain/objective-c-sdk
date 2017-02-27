@@ -52,6 +52,10 @@ typedef void (^OPTLYBuilderBlock)(OPTLYBuilder * _Nullable builder);
 @property (nonatomic, strong, nonnull) NSString *clientVersion;
 /// The client engine
 @property (nonatomic, strong, nonnull) NSString *clientEngine;
+/// The URL to send activate (impression) events
+@property (nonatomic, strong, nonnull) NSURL *activateURL;
+/// The URL to send track (conversion) events
+@property (nonatomic, strong, nonnull) NSURL *trackURL;
 
 
 /// Create an Optimizely Builder object.

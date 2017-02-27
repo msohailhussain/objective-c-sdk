@@ -45,6 +45,11 @@ NSString *const OptimizelyNotificationsUserDictionaryEventNameKey = @"eventKey";
 NSString *const OptimizelyNotificationsUserDictionaryEventValueKey = @"eventValue";
 NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingKey = @"ExperimentVariationMapping";
 
+@interface Optimizely()
+@property (nonatomic, strong) NSURL *activateURL;
+@property (nonatomic, strong) NSURL *trackURL;
+@end
+
 @implementation Optimizely
 
 + (instancetype)init:(OPTLYBuilderBlock)builderBlock {
@@ -66,6 +71,8 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
             _errorHandler = builder.errorHandler;
             _logger = builder.logger;
             _userProfile = builder.userProfile;
+            _activateURL = builder.activateURL;
+            _trackURL = builder.trackURL;
         }
         return self;
     }
@@ -128,6 +135,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     
     NSDictionary *impressionEventParams = [impressionEvent toDictionary];
     [self.eventDispatcher dispatchImpressionEvent:impressionEventParams
+                                            toURL:self.activateURL
                                          callback:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                              if (error) {
                                                  [self handleErrorLogsForActivateUser:userId experiment:experimentKey];
@@ -228,6 +236,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
     
     [self.eventDispatcher dispatchConversionEvent:conversionEventParams
+                                            toURL:self.trackURL
                                          callback:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                              if (error) {
                                                  [self handleErrorLogsForTrackEvent:eventKey userId:userId];

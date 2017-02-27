@@ -35,8 +35,8 @@ static NSString * const kHTTPHeaderFieldValueApplicationJSON = @"application/jso
     BOOL isValidProtocolDeclaration = [instanceClass conformsToProtocol:@protocol(OPTLYEventDispatcher)];
     
     // runtime checks
-    BOOL implementsDispatchImpressionEventMethod = [instanceClass instancesRespondToSelector:@selector(dispatchImpressionEvent:callback:)];
-    BOOL implementsDispatchConversionEventMethod = [instanceClass instancesRespondToSelector:@selector(dispatchConversionEvent:callback:)];
+    BOOL implementsDispatchImpressionEventMethod = [instanceClass instancesRespondToSelector:@selector(dispatchImpressionEvent:toURL:callback:)];
+    BOOL implementsDispatchConversionEventMethod = [instanceClass instancesRespondToSelector:@selector(dispatchConversionEvent:toURL:callback:)];
     
     return isValidProtocolDeclaration && implementsDispatchImpressionEventMethod && implementsDispatchConversionEventMethod;
 }
@@ -46,15 +46,25 @@ static NSString * const kHTTPHeaderFieldValueApplicationJSON = @"application/jso
 @implementation OPTLYEventDispatcherBasic
 
 - (void)dispatchImpressionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback {
-    NSURL *url = [NSURL URLWithString:kEventDispatcherImpressionEventURL];
+    // if no url is specified, use the Optimizely endpoint
+    if (!url) {
+        url = [NSURL URLWithString:kEventDispatcherImpressionEventURL];
+    }
+    
     [self dispatchEvent:params toURL:url completionHandler:callback];
 }
 
 - (void)dispatchConversionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback {
     
-    NSURL *url = [NSURL URLWithString:kEventDispatcherConversionEventURL];
+    // if no url is specified, use the Optimizely endpoint
+    if (!url) {
+        url = [NSURL URLWithString:kEventDispatcherConversionEventURL];
+    }
+    
     [self dispatchEvent:params toURL:url completionHandler:callback];
 }
 
@@ -70,11 +80,13 @@ static NSString * const kHTTPHeaderFieldValueApplicationJSON = @"application/jso
 @implementation OPTLYEventDispatcherNoOp
 
 - (void)dispatchImpressionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback {
     return;
 }
 
 - (void)dispatchConversionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable void(^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback {
     return;
 }

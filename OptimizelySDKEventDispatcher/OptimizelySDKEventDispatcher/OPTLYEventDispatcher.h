@@ -70,6 +70,7 @@ typedef void (^OPTLYEventDispatcherResponse)(NSData * _Nullable data, NSURLRespo
  */
 
 - (void)dispatchImpressionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable OPTLYEventDispatcherResponse)callback;
 
 /**
@@ -78,6 +79,7 @@ typedef void (^OPTLYEventDispatcherResponse)(NSData * _Nullable data, NSURLRespo
  * @param callback The completion handler
  */
 - (void)dispatchConversionEvent:(nonnull NSDictionary *)params
+                          toURL:(nullable NSURL *)url
                        callback:(nullable OPTLYEventDispatcherResponse)callback;
 
 /**
