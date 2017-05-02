@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# alda's test
 # This script guides you through all the steps needed to do a new release.
 # The script does the following:
 
