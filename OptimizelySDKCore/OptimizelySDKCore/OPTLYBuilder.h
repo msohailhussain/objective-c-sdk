@@ -40,7 +40,7 @@ typedef void (^OPTLYBuilderBlock)(OPTLYBuilder * _Nullable builder);
 @property (nonatomic, readonly, strong, nullable) OPTLYDecisionService *decisionService;
 /// The event builder created by the builder.
 @property (nonatomic, readonly, strong, nullable) OPTLYEventBuilderDefault *eventBuilder;
-///
+/// The notification center created by the builder.
 @property (nonatomic, readonly, strong, nullable) OPTLYNotificationCenter *notificationCenter;
 /// The error handler is by default set to one that is created by Optimizely. This default error handler can be overridden by any object that conforms to the OPTLYErrorHandler protocol.
 @property (nonatomic, readwrite, strong, nullable) id<OPTLYErrorHandler> errorHandler;

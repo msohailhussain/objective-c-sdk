@@ -17,8 +17,6 @@
 #import <Foundation/Foundation.h>
 #import "OPTLYBuilder.h"
 
-extern NSString * _Nonnull const OptimizelyDidActivateExperimentNotification;
-extern NSString * _Nonnull const OptimizelyDidTrackEventNotification;
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryExperimentKey;
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryVariationKey;
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryUserIdKey;
@@ -27,8 +25,8 @@ extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryEventNameK
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryEventValueKey;
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryExperimentVariationMappingKey;
 
-@class OPTLYProjectConfig, OPTLYVariation, OPTLYDecisionService;
-@protocol OPTLYBucketer, OPTLYErrorHandler, OPTLYEventBuilder, OPTLYEventDispatcher, OPTLYLogger, OPTLYNotificationCenter;
+@class OPTLYProjectConfig, OPTLYVariation, OPTLYDecisionService, OPTLYNotificationCenter;
+@protocol OPTLYBucketer, OPTLYErrorHandler, OPTLYEventBuilder, OPTLYEventDispatcher, OPTLYLogger;
 
 @protocol Optimizely <NSObject>
 
@@ -264,7 +262,7 @@ extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryExperiment
 @property (nonatomic, strong, readonly, nullable) id<OPTLYEventDispatcher> eventDispatcher;
 @property (nonatomic, strong, readonly, nullable) id<OPTLYLogger> logger;
 @property (nonatomic, strong, readonly, nullable) id<OPTLYUserProfileService> userProfileService;
-@property (nonatomic, strong, readonly, nullable) id<OPTLYNotificationCenter> notificationCenter;
+@property (nonatomic, strong, readonly, nullable) OPTLYNotificationCenter *notificationCenter;
 
 /**
  * Init with builder block

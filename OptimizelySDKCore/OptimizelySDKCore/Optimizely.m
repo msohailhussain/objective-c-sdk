@@ -37,9 +37,8 @@
 #import "OPTLYDecisionService.h"
 #import "OPTLYFeatureVariable.h"
 #import "OPTLYVariableUsage.h"
+#import "OPTLYNotificationCenter.h"
 
-NSString *const OptimizelyDidActivateExperimentNotification = @"OptimizelyExperimentActivated";
-NSString *const OptimizelyDidTrackEventNotification = @"OptimizelyEventTracked";
 NSString *const OptimizelyNotificationsUserDictionaryExperimentKey = @"experiment";
 NSString *const OptimizelyNotificationsUserDictionaryVariationKey = @"variation";
 NSString *const OptimizelyNotificationsUserDictionaryUserIdKey = @"userId";
@@ -156,10 +155,6 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     if (userId != nil) {
         userInfo[OptimizelyNotificationsUserDictionaryUserIdKey] = userId;
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:OptimizelyDidActivateExperimentNotification
-                                                        object:self
-                                                      userInfo:userInfo];
     
     return variation;
 }
@@ -478,9 +473,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     if ([experimentVariationMapping count] > 0) {
         userInfo[OptimizelyNotificationsUserDictionaryExperimentVariationMappingKey] = [experimentVariationMapping copy];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:OptimizelyDidTrackEventNotification
-                                                        object:self
-                                                      userInfo:userInfo];
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeTrack args:eventKey, userId, attributes, eventTags, conversionEventParams, nil];
 }
 
 # pragma mark - Helper methods
@@ -547,6 +540,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
                                                  callback(error);
                                              }
                                          }];
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, impressionEventParams, nil];
     return variation;
 }
 
