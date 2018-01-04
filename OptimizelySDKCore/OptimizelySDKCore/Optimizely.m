@@ -70,6 +70,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
             _errorHandler = builder.errorHandler;
             _logger = builder.logger;
             _userProfileService = builder.userProfileService;
+            _notificationCenter = builder.notificationCenter;
         } else {
             // Provided OPTLYBuilder object is invalid
             if (_logger == nil) {

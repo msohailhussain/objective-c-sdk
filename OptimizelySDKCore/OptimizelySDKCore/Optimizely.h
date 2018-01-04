@@ -28,7 +28,7 @@ extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryEventValue
 extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryExperimentVariationMappingKey;
 
 @class OPTLYProjectConfig, OPTLYVariation, OPTLYDecisionService;
-@protocol OPTLYBucketer, OPTLYErrorHandler, OPTLYEventBuilder, OPTLYEventDispatcher, OPTLYLogger;
+@protocol OPTLYBucketer, OPTLYErrorHandler, OPTLYEventBuilder, OPTLYEventDispatcher, OPTLYLogger, OPTLYNotificationCenter;
 
 @protocol Optimizely <NSObject>
 
@@ -264,6 +264,7 @@ extern NSString * _Nonnull const OptimizelyNotificationsUserDictionaryExperiment
 @property (nonatomic, strong, readonly, nullable) id<OPTLYEventDispatcher> eventDispatcher;
 @property (nonatomic, strong, readonly, nullable) id<OPTLYLogger> logger;
 @property (nonatomic, strong, readonly, nullable) id<OPTLYUserProfileService> userProfileService;
+@property (nonatomic, strong, readonly, nullable) id<OPTLYNotificationCenter> notificationCenter;
 
 /**
  * Init with builder block
