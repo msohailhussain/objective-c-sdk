@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@protocol OPTLYNotificationListener;
+#import "OPTLYNotificationListener.h"
 
 @interface OPTLYTrackNotification : NSObject <OPTLYNotificationListener>
 /**

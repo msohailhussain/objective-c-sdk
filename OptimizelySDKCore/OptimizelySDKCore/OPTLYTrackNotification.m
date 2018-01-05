@@ -17,24 +17,24 @@
     
     id arg = firstArg;
     assert([arg isMemberOfClass:[NSString class]]);
-    NSString *eventKey = (__bridge NSString *)args;
+    NSString *eventKey = (NSString *)CFBridgingRelease(args);
     
     arg = va_arg(args, id);
     assert([arg isMemberOfClass:[NSString class]]);
-    NSString *userId = (__bridge NSString *)args;
+    NSString *userId = (NSString *)CFBridgingRelease(args);
     
     arg = va_arg(args, id);
     NSDictionary<NSString *,NSString *> *strToStrMap;
     assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *attributes = (__bridge NSDictionary<NSString *,NSString *> *)args;
+    NSDictionary<NSString *,NSString *> *attributes = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
     
     arg = va_arg(args, id);
     assert([arg isMemberOfClass:[NSDictionary class]]);
-    NSDictionary *eventTags = (__bridge NSDictionary *)args;
+    NSDictionary *eventTags = (NSDictionary *)CFBridgingRelease(args);
     
     arg = va_arg(args, id);
     assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *logEvent = (__bridge NSDictionary<NSString *,NSString *> *)args;
+    NSDictionary<NSString *,NSString *> *logEvent = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
     
     va_end(args);
     

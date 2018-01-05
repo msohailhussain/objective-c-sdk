@@ -24,20 +24,29 @@
 -(instancetype)init {
     self = [super init];
     if (self != nil) {
+        _notificationId = 1;
+        _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
         _notifications = [NSMutableDictionary new];
         for (NSUInteger i = OPTLYNotificationTypeActivate; i <= OPTLYNotificationTypeTrack; i++) {
             NSNumber *number = [NSNumber numberWithUnsignedInteger:i];
             _notifications[number] = [NSMutableDictionary new];
         }
-        _logger = [[OPTLYLoggerDefault alloc] initWithLogLevel:OptimizelyLogLevelAll];
     }
     return self;
 }
 
 #pragma mark - Public Methods
 
+-(NSUInteger)notificationsCount {
+    NSUInteger notificationsCount = 0;
+    for (OPTLYNotificationHolder *notificationsMap in _notifications.allValues) {
+        notificationsCount += notificationsMap.count;
+    }
+    return notificationsCount;
+}
+
 - (NSInteger)addNotification:(OPTLYNotificationType)type activateListener:(OPTLYActivateNotification *)activateListener {
-    if (![self isNotificationTypeValid:type expectedNotificationType:OPTLYNotificationTypeTrack])
+    if (![self isNotificationTypeValid:type expectedNotificationType:OPTLYNotificationTypeActivate])
         return 0;
     return [self addNotification:type listener:activateListener];
 }
@@ -50,9 +59,9 @@
 
 - (BOOL)removeNotification:(NSUInteger)notificationId {
     for (NSNumber *notificationType in _notifications.allKeys) {
-        OPTLYNotificationHolder *notification = _notifications[notificationType];
-        if (notification != nil) {
-            [notification removeObjectForKey:@(notificationId)];
+        OPTLYNotificationHolder *notificationMap = _notifications[notificationType];
+        if (notificationMap != nil && [notificationMap.allKeys containsObject:@(notificationId)]) {
+            [notificationMap removeObjectForKey:@(notificationId)];
             return YES;
         }
     }

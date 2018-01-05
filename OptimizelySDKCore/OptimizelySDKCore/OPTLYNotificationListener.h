@@ -8,4 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-
+@protocol OPTLYNotificationListener <NSObject>
+/**
+ * This is the method of notification.  Implementation classes such as OPTLYActivateNotification
+ * will implement this call and provide another method with the correct parameters
+ * Notify called when a notification is triggered via the OPTLYNotificationCenter
+ * @param firstArg - variable argument list based on the type of notification.
+ */
+- (void)notify:(id)firstArg, ...;
+@end

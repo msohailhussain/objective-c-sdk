@@ -21,8 +21,10 @@ typedef NSMutableDictionary<NSNumber *, id<OPTLYNotificationListener> > OPTLYNot
 
 @interface OPTLYNotificationCenter : NSObject
 
-// Notification Id represeting number of notifications.
+// Notification Id represeting id of notification.
 @property (nonatomic, readonly) NSUInteger notificationId;
+// notification Count represeting total number of notifications.
+@property (nonatomic, readonly) NSUInteger notificationsCount;
 
 /**
  * Add an activate notification listener to the notification center.
