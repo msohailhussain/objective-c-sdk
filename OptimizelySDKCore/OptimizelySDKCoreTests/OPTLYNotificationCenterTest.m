@@ -113,6 +113,7 @@ static NSString *const kVariationId = @"6362476365";
 - (void)testAddInvalidNotificationListeners {
     // Verify that AddNotification gets failed on adding invalid notification listeners.
     XCTAssertEqual(0, [_notificationCenter addNotification:OPTLYNotificationTypeTrack activateListener:_activateNotification]);
+    XCTAssertEqual(0, [_notificationCenter addNotification:OPTLYNotificationTypeActivate trackListener:_trackNotification]);
     
     // Verify that no notifion has been added.
     XCTAssertEqual(0, _notificationCenter.notificationsCount);
@@ -190,6 +191,16 @@ static NSString *const kVariationId = @"6362476365";
     OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
     OCMVerify([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
     OCMVerify([anotherActivateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    
+    NSString *eventKey = [NSString stringWithFormat:@"%@", kUserId];
+    NSDictionary *eventTags = [NSDictionary new];
+    
+    // Verify that only the registered notifications of track type are called.
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeTrack args:eventKey, userId, attributes, eventTags, event, nil];
+    
+    OCMVerify([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
+    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    OCMReject([anotherActivateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
     
     // Verify that after clearing notifications, SendNotification should not call any notification
     // which were previously registered.
