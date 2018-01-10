@@ -65,11 +65,6 @@ static NSString * const kVariationIDForWhitelisting = @"variation4";
                                  variableKey:(nullable NSString *)variableKey
                                       userId:(nullable NSString *)userId
                                   attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes;
-- (NSString *)getFeatureVariableValueForType:(NSString *)variableType
-                                  featureKey:(nullable NSString *)featureKey
-                                 variableKey:(nullable NSString *)variableKey
-                                      userId:(nullable NSString *)userId
-                                  attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes;
 @end
 
 @interface OptimizelyTest : XCTestCase
