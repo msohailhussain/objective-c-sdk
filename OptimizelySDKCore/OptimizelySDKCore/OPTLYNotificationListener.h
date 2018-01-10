@@ -15,5 +15,5 @@
  * Notify called when a notification is triggered via the OPTLYNotificationCenter
  * @param firstArg - variable argument list based on the type of notification.
  */
-- (void)notify:(id)firstArg, ...;
+- (void)notify:(id)firstArg otherArgs:(va_list)args;
 @end

@@ -30,7 +30,7 @@
 static NSString * const kDataModelDatafileName = @"optimizely_6372300739_v4";
 static NSString *const kUserId = @"userId";
 static NSString *const kExperimentKey = @"testExperimentWithFirefoxAudience";
-static NSString *const kVariationId = @"6384330451";
+static NSString *const kVariationId = @"6362476365";
 
 @interface OPTLYActivateNotificationTest : OPTLYActivateNotification
 @end
@@ -166,53 +166,45 @@ static NSString *const kVariationId = @"6384330451";
 }
 
 - (void)testSendNotifications {
-
+    id activateNotificationMock = OCMPartialMock(_activateNotification);
+    id anotherActivateNotificationMock = OCMPartialMock(_anotherActivateNotification);
+    id trackNotificationMock = OCMPartialMock(_trackNotification);
+    
     // Add activate notifications.
-    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:_activateNotification];
-    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:_anotherActivateNotification];
+    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:activateNotificationMock];
+    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:anotherActivateNotificationMock];
     
     // Add track notification.
-    [_notificationCenter addNotification:OPTLYNotificationTypeTrack trackListener:_trackNotification];
-
+    [_notificationCenter addNotification:OPTLYNotificationTypeTrack trackListener:trackNotificationMock];
+    
     // Fire decision type notifications.
     OPTLYExperiment *experiment = [_projectConfig getExperimentForKey:kExperimentKey];
     OPTLYVariation *variation = [experiment getVariationForVariationId:kVariationId];
     NSDictionary *attributes = [NSDictionary new];
     NSDictionary *event = [NSDictionary new];
-    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:@"exp", @"user", @"var", @"att", @"event", nil];
+    NSString *userId = [NSString stringWithFormat:@"%@", kUserId];
     
     // Verify that only the registered notifications of decision type are called.
-    id trackNotificationMock = OCMPartialMock(_trackNotification);
-    OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:kUserId attributes:attributes eventTags:[OCMArg any] event:event]);
-    [trackNotificationMock stopMocking];
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, event, nil];
     
-    id activateNotificationMock = OCMPartialMock(_activateNotification);
-    OCMVerify([activateNotificationMock onActivate:experiment userId:kUserId attributes:attributes variation:variation event:event]);
-    [activateNotificationMock stopMocking];
+    OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
+    OCMVerify([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    OCMVerify([anotherActivateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
     
-    activateNotificationMock = OCMPartialMock(_anotherActivateNotification);
-    OCMVerify([activateNotificationMock onActivate:experiment userId:kUserId attributes:attributes variation:variation event:event]);
-    [activateNotificationMock stopMocking];
-              
     // Verify that after clearing notifications, SendNotification should not call any notification
     // which were previously registered.
     [_notificationCenter clearAllNotifications];
     
-    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, kUserId, attributes, variation, event, nil];
-    
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, event, nil];
     
     // Again verify notifications which were registered are not called.
-   trackNotificationMock = OCMPartialMock(_trackNotification);
-   OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:kUserId attributes:attributes eventTags:[OCMArg any] event:event]);
-   [trackNotificationMock stopMocking];
-   
-   activateNotificationMock = OCMPartialMock(_activateNotification);
-   OCMReject([activateNotificationMock onActivate:experiment userId:kUserId attributes:attributes variation:variation event:event]);
-   [activateNotificationMock stopMocking];
-  
-   activateNotificationMock = OCMPartialMock(_anotherActivateNotification);
-   OCMReject([activateNotificationMock onActivate:experiment userId:kUserId attributes:attributes variation:variation event:event]);
-   [activateNotificationMock stopMocking];
+    OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
+    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    
+    [activateNotificationMock stopMocking];
+    [anotherActivateNotificationMock stopMocking];
+    [trackNotificationMock stopMocking];
 }
 
 @end

@@ -82,7 +82,10 @@
     OPTLYNotificationHolder *notification = _notifications[@(type)];
     for (id<OPTLYNotificationListener> object in notification.allValues) {
         @try {
-            [object notify:firstArg];
+            va_list args;
+            va_start(args, firstArg);
+            [object notify:firstArg otherArgs:args];
+            va_end(args);
         } @catch (NSException *exception) {
             NSString *logMessage = [NSString stringWithFormat:@"Problem calling notify callback. Error: %@", exception.reason];
             [_logger logMessage:logMessage withLevel:OptimizelyLogLevelError];

@@ -12,31 +12,27 @@
 
 @implementation OPTLYActivateNotification
 
-- (void)notify:(id)firstArg, ... {
+- (void)notify:(id)firstArg otherArgs:(va_list)args {
     
-    va_list args;
-    va_start(args, firstArg);
+    OPTLYExperiment *experiment = (OPTLYExperiment *)firstArg;
+    assert(experiment);
+    assert([experiment isKindOfClass:[OPTLYExperiment class]]);
     
-    id arg = firstArg;
-    assert([arg isMemberOfClass:[OPTLYExperiment class]]);
-    OPTLYExperiment *experiment = (OPTLYExperiment *)CFBridgingRelease(args);
+    NSString *userId = va_arg(args, NSString *);
+    assert(userId);
+    assert([userId isKindOfClass:[NSString class]]);
     
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[NSString class]]);
-    NSString *userId = (NSString *)CFBridgingRelease(args);
+    NSDictionary *attributes = va_arg(args, NSDictionary *);
+    assert(attributes);
+    assert([attributes isKindOfClass:[NSDictionary class]]);
     
-    arg = va_arg(args, id);
-    NSDictionary<NSString *,NSString *> *strToStrMap;
-    assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *attributes = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
+    OPTLYVariation *variation = va_arg(args, OPTLYVariation *);
+    assert(variation);
+    assert([variation isKindOfClass:[OPTLYVariation class]]);
     
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[OPTLYVariation class]]);
-    OPTLYVariation *variation = (OPTLYVariation *)CFBridgingRelease(args);
-    
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *logEvent = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
+    NSDictionary *logEvent = va_arg(args, NSDictionary *);
+    assert(logEvent);
+    assert([logEvent isKindOfClass:[NSDictionary class]]);
     
     va_end(args);
     

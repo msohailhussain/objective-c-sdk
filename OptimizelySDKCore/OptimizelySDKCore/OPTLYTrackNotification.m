@@ -10,31 +10,27 @@
 
 @implementation OPTLYTrackNotification
 
-- (void)notify:(id)firstArg, ... {
+- (void)notify:(id)firstArg otherArgs:(va_list)args {
     
-    va_list args;
-    va_start(args, firstArg);
+    NSString *eventKey = (NSString *)firstArg;
+    assert(eventKey);
+    assert([eventKey isKindOfClass:[NSString class]]);
     
-    id arg = firstArg;
-    assert([arg isMemberOfClass:[NSString class]]);
-    NSString *eventKey = (NSString *)CFBridgingRelease(args);
+    NSString *userId = va_arg(args, NSString *);
+    assert(userId);
+    assert([userId isKindOfClass:[NSString class]]);
     
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[NSString class]]);
-    NSString *userId = (NSString *)CFBridgingRelease(args);
+    NSDictionary *attributes = va_arg(args, NSDictionary *);
+    assert(attributes);
+    assert([attributes isKindOfClass:[NSDictionary class]]);
     
-    arg = va_arg(args, id);
-    NSDictionary<NSString *,NSString *> *strToStrMap;
-    assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *attributes = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
+    NSDictionary *eventTags = va_arg(args, NSDictionary *);
+    assert(eventTags);
+    assert([eventTags isKindOfClass:[NSDictionary class]]);
     
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[NSDictionary class]]);
-    NSDictionary *eventTags = (NSDictionary *)CFBridgingRelease(args);
-    
-    arg = va_arg(args, id);
-    assert([arg isMemberOfClass:[strToStrMap class]]);
-    NSDictionary<NSString *,NSString *> *logEvent = (NSDictionary<NSString *,NSString *> *)CFBridgingRelease(args);
+    NSDictionary *logEvent = va_arg(args, NSDictionary *);
+    assert(logEvent);
+    assert([logEvent isKindOfClass:[NSDictionary class]]);
     
     va_end(args);
     
