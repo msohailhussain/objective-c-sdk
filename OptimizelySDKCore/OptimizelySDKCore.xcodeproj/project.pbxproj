@@ -180,16 +180,6 @@
 		3EA563A21FFD23FF00D0E311 /* OPTLYNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5639F1FFD23FE00D0E311 /* OPTLYNotificationCenter.m */; };
 		3EA563A31FFD23FF00D0E311 /* OPTLYNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563A01FFD23FF00D0E311 /* OPTLYNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3EA563A41FFD23FF00D0E311 /* OPTLYNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563A01FFD23FF00D0E311 /* OPTLYNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563A61FFD244500D0E311 /* OPTLYNotificationListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563A51FFD244500D0E311 /* OPTLYNotificationListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563A71FFD244500D0E311 /* OPTLYNotificationListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563A51FFD244500D0E311 /* OPTLYNotificationListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563AC1FFD264200D0E311 /* OPTLYTrackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA563A81FFD264000D0E311 /* OPTLYTrackNotification.m */; };
-		3EA563AD1FFD264200D0E311 /* OPTLYTrackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA563A81FFD264000D0E311 /* OPTLYTrackNotification.m */; };
-		3EA563AE1FFD264200D0E311 /* OPTLYActivateNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA563A91FFD264100D0E311 /* OPTLYActivateNotification.m */; };
-		3EA563AF1FFD264200D0E311 /* OPTLYActivateNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA563A91FFD264100D0E311 /* OPTLYActivateNotification.m */; };
-		3EA563B01FFD264200D0E311 /* OPTLYActivateNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563AA1FFD264100D0E311 /* OPTLYActivateNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563B11FFD264200D0E311 /* OPTLYActivateNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563AA1FFD264100D0E311 /* OPTLYActivateNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563B21FFD264200D0E311 /* OPTLYTrackNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563AB1FFD264100D0E311 /* OPTLYTrackNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3EA563B31FFD264200D0E311 /* OPTLYTrackNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EA563AB1FFD264100D0E311 /* OPTLYTrackNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3EA818951FFF890D00BEBD41 /* OPTLYNotificationCenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA818931FFF88F800BEBD41 /* OPTLYNotificationCenterTest.m */; };
 		3EA818961FFF890E00BEBD41 /* OPTLYNotificationCenterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA818931FFF88F800BEBD41 /* OPTLYNotificationCenterTest.m */; };
 		3ECB81F21FD9267D006505E6 /* OPTLYFeatureVariable.h in Headers */ = {isa = PBXBuildFile; fileRef = 3ECB81F01FD9267D006505E6 /* OPTLYFeatureVariable.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -579,11 +569,6 @@
 		3EA27B0B1F47AB0D00C0208F /* OPTLYJSONModelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OPTLYJSONModelTests-Info.plist"; sourceTree = "<group>"; };
 		3EA5639F1FFD23FE00D0E311 /* OPTLYNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTLYNotificationCenter.m; sourceTree = "<group>"; };
 		3EA563A01FFD23FF00D0E311 /* OPTLYNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTLYNotificationCenter.h; sourceTree = "<group>"; };
-		3EA563A51FFD244500D0E311 /* OPTLYNotificationListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTLYNotificationListener.h; sourceTree = "<group>"; };
-		3EA563A81FFD264000D0E311 /* OPTLYTrackNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTLYTrackNotification.m; sourceTree = "<group>"; };
-		3EA563A91FFD264100D0E311 /* OPTLYActivateNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTLYActivateNotification.m; sourceTree = "<group>"; };
-		3EA563AA1FFD264100D0E311 /* OPTLYActivateNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTLYActivateNotification.h; sourceTree = "<group>"; };
-		3EA563AB1FFD264100D0E311 /* OPTLYTrackNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTLYTrackNotification.h; sourceTree = "<group>"; };
 		3EA818931FFF88F800BEBD41 /* OPTLYNotificationCenterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTLYNotificationCenterTest.m; sourceTree = "<group>"; };
 		3ECB81F01FD9267D006505E6 /* OPTLYFeatureVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPTLYFeatureVariable.h; sourceTree = "<group>"; };
 		3ECB81F11FD9267D006505E6 /* OPTLYFeatureVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OPTLYFeatureVariable.m; sourceTree = "<group>"; };
@@ -955,11 +940,6 @@
 		3EA563831FFB621200D0E311 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				3EA563AA1FFD264100D0E311 /* OPTLYActivateNotification.h */,
-				3EA563A91FFD264100D0E311 /* OPTLYActivateNotification.m */,
-				3EA563AB1FFD264100D0E311 /* OPTLYTrackNotification.h */,
-				3EA563A81FFD264000D0E311 /* OPTLYTrackNotification.m */,
-				3EA563A51FFD244500D0E311 /* OPTLYNotificationListener.h */,
 				3EA563A01FFD23FF00D0E311 /* OPTLYNotificationCenter.h */,
 				3EA5639F1FFD23FE00D0E311 /* OPTLYNotificationCenter.m */,
 			);
@@ -1290,8 +1270,6 @@
 				EA2FAB001DC6F57200B1D81B /* OPTLYExperiment.h in Headers */,
 				EA2FAB321DC6F59D00B1D81B /* OPTLYErrorHandler.h in Headers */,
 				EA8FD0DB1DE9798E00D950AD /* OPTLYHTTPRequestManager.h in Headers */,
-				3EA563B21FFD264200D0E311 /* OPTLYTrackNotification.h in Headers */,
-				3EA563A61FFD244500D0E311 /* OPTLYNotificationListener.h in Headers */,
 				EA2FAB731DC6F5F400B1D81B /* OPTLYLog.h in Headers */,
 				EA2FAB521DC6F5BE00B1D81B /* OPTLYLogger.h in Headers */,
 				3EA563A31FFD23FF00D0E311 /* OPTLYNotificationCenter.h in Headers */,
@@ -1311,7 +1289,6 @@
 				EA2FAAAC1DC6F57200B1D81B /* OPTLYEvent.h in Headers */,
 				EA2FAAD01DC6F57200B1D81B /* OPTLYEventFeature.h in Headers */,
 				EA2FAABE1DC6F57200B1D81B /* OPTLYEventDecision.h in Headers */,
-				3EA563B01FFD264200D0E311 /* OPTLYActivateNotification.h in Headers */,
 				EA2FAAA61DC6F57200B1D81B /* OPTLYDecisionEventTicket.h in Headers */,
 				EA2FAAC41DC6F57200B1D81B /* OPTLYEventDecisionTicket.h in Headers */,
 				EA2FAB061DC6F57200B1D81B /* OPTLYGroup.h in Headers */,
@@ -1355,8 +1332,6 @@
 				EA2FAB591DC6F5BE00B1D81B /* OPTLYLoggerMessages.h in Headers */,
 				EA2FAB831DC6FCD300B1D81B /* OptimizelySDKCore.h in Headers */,
 				EA2FAB491DC6F5B100B1D81B /* OPTLYEventBuilder.h in Headers */,
-				3EA563B31FFD264200D0E311 /* OPTLYTrackNotification.h in Headers */,
-				3EA563A71FFD244500D0E311 /* OPTLYNotificationListener.h in Headers */,
 				EA2FAB391DC6F59D00B1D81B /* OPTLYErrorHandlerMessages.h in Headers */,
 				EA2FAB741DC6F5F400B1D81B /* OPTLYLog.h in Headers */,
 				3EA563A41FFD23FF00D0E311 /* OPTLYNotificationCenter.h in Headers */,
@@ -1376,7 +1351,6 @@
 				EA2FAAE91DC6F57200B1D81B /* OPTLYEventParameterKeys.h in Headers */,
 				EA2FAAFB1DC6F57200B1D81B /* OPTLYEventView.h in Headers */,
 				EA2FAABF1DC6F57200B1D81B /* OPTLYEventDecision.h in Headers */,
-				3EA563B11FFD264200D0E311 /* OPTLYActivateNotification.h in Headers */,
 				EA2FAAD71DC6F57200B1D81B /* OPTLYEventHeader.h in Headers */,
 				EA2FAAD11DC6F57200B1D81B /* OPTLYEventFeature.h in Headers */,
 				EA2FAAE31DC6F57200B1D81B /* OPTLYEventMetric.h in Headers */,
@@ -1906,13 +1880,11 @@
 				EA2FAC101DC6FFC600B1D81B /* OPTLYEvent.m in Sources */,
 				3EA563A11FFD23FF00D0E311 /* OPTLYNotificationCenter.m in Sources */,
 				EA16D9441ECCC5C600C4C998 /* OPTLYDecisionService.m in Sources */,
-				3EA563AC1FFD264200D0E311 /* OPTLYTrackNotification.m in Sources */,
 				EAC5F3551E7B7EEF00C087B8 /* OPTLYUserProfileServiceBasic.m in Sources */,
 				EA2FAC111DC6FFC600B1D81B /* OPTLYEventAudience.m in Sources */,
 				EA2FAC121DC6FFC600B1D81B /* OPTLYEventDecision.m in Sources */,
 				EA2FAC131DC6FFC600B1D81B /* OPTLYEventDecisionTicket.m in Sources */,
 				3E858C841F4227E300D53856 /* OPTLYJSONKeyMapper.m in Sources */,
-				3EA563AE1FFD264200D0E311 /* OPTLYActivateNotification.m in Sources */,
 				EA2FAC141DC6FFC600B1D81B /* OPTLYEventFeature.m in Sources */,
 				EA2FAC151DC6FFC600B1D81B /* OPTLYEventHeader.m in Sources */,
 				EA2FAC161DC6FFC600B1D81B /* OPTLYEventLayerState.m in Sources */,
@@ -1991,13 +1963,11 @@
 				EA16D9451ECCC5C600C4C998 /* OPTLYDecisionService.m in Sources */,
 				3EA563A21FFD23FF00D0E311 /* OPTLYNotificationCenter.m in Sources */,
 				EA2FABEC1DC6FFA100B1D81B /* OPTLYEventAudience.m in Sources */,
-				3EA563AD1FFD264200D0E311 /* OPTLYTrackNotification.m in Sources */,
 				EA2FABED1DC6FFA100B1D81B /* OPTLYEventDecision.m in Sources */,
 				EA2FABEE1DC6FFA100B1D81B /* OPTLYEventDecisionTicket.m in Sources */,
 				EA2FABEF1DC6FFA100B1D81B /* OPTLYEventFeature.m in Sources */,
 				EA2FABF01DC6FFA100B1D81B /* OPTLYEventHeader.m in Sources */,
 				EA2FABF11DC6FFA100B1D81B /* OPTLYEventLayerState.m in Sources */,
-				3EA563AF1FFD264200D0E311 /* OPTLYActivateNotification.m in Sources */,
 				3E858C8C1F4227F900D53856 /* OPTLYJSONModelError.m in Sources */,
 				EA2C24301DE6A2470063ADA0 /* OPTLYProjectConfigBuilder.m in Sources */,
 				EA8FD0E21DE9798E00D950AD /* OPTLYNetworkService.m in Sources */,

@@ -17,8 +17,6 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "OPTLYNotificationCenter.h"
-#import "OPTLYActivateNotification.h"
-#import "OPTLYTrackNotification.h"
 #import "OPTLYErrorHandler.h"
 #import "OPTLYLogger.h"
 #import "OPTLYUserProfileServiceBasic.h"
@@ -32,27 +30,11 @@ static NSString *const kUserId = @"userId";
 static NSString *const kExperimentKey = @"testExperimentWithFirefoxAudience";
 static NSString *const kVariationId = @"6362476365";
 
-@interface OPTLYActivateNotificationTest : OPTLYActivateNotification
-@end
-@implementation OPTLYActivateNotificationTest
--(void)onActivate:(OPTLYExperiment *)experiment userId:(NSString *)userId attributes:(NSDictionary<NSString *,NSString *> *)attributes variation:(OPTLYVariation *)variation event:(NSDictionary<NSString *,NSString *> *)event {
-    
-}
-@end
-
-@interface OPTLYTrackNotificationTest : OPTLYTrackNotification
-@end
-@implementation OPTLYTrackNotificationTest
--(void)onTrack:(NSString *)eventKey userId:(NSString *)userId attributes:(NSDictionary<NSString *,NSString *> *)attributes eventTags:(NSDictionary *)eventTags event:(NSDictionary<NSString *,NSString *> *)event {
-    
-}
-@end
-
 @interface OPTLYNotificationCenterTest : XCTestCase
 @property (nonatomic, strong) OPTLYNotificationCenter *notificationCenter;
-@property (nonatomic, strong) OPTLYActivateNotificationTest *activateNotification;
-@property (nonatomic, strong) OPTLYActivateNotificationTest *anotherActivateNotification;
-@property (nonatomic, strong) OPTLYTrackNotificationTest *trackNotification;
+@property (nonatomic, copy) OPTLYActivateNotificationListener activateNotification;
+@property (nonatomic, copy) OPTLYActivateNotificationListener anotherActivateNotification;
+@property (nonatomic, copy) OPTLYTrackNotificationListener trackNotification;
 @property (nonatomic, strong) OPTLYProjectConfig *projectConfig;
 @end
 
@@ -62,9 +44,24 @@ static NSString *const kVariationId = @"6362476365";
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     self.notificationCenter = [OPTLYNotificationCenter new];
-    self.activateNotification = [OPTLYActivateNotificationTest new];
-    self.anotherActivateNotification = [OPTLYActivateNotificationTest new];
-    self.trackNotification = [OPTLYTrackNotificationTest new];
+    __weak typeof(self) weakSelf = self;
+    weakSelf.activateNotification = ^(OPTLYExperiment *experiment, NSString *userId, NSDictionary<NSString *,NSString *> *attributes, OPTLYVariation *variation, NSDictionary<NSString *,NSString *> *event) {
+        NSString *logMessage = @"activate notification called with %@";
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, experiment.experimentKey] withLevel:OptimizelyLogLevelInfo];
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, userId] withLevel:OptimizelyLogLevelInfo];
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, variation.variationKey] withLevel:OptimizelyLogLevelInfo];
+    };
+    weakSelf.anotherActivateNotification = ^(OPTLYExperiment *experiment, NSString *userId, NSDictionary<NSString *,NSString *> *attributes, OPTLYVariation *variation, NSDictionary<NSString *,NSString *> *event) {
+        NSString *logMessage = @"activate notification called with %@";
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, experiment.experimentKey] withLevel:OptimizelyLogLevelInfo];
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, userId] withLevel:OptimizelyLogLevelInfo];
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, variation.variationKey] withLevel:OptimizelyLogLevelInfo];
+    };
+    weakSelf.trackNotification = ^(NSString *eventKey, NSString *userId, NSDictionary<NSString *,NSString *> *attributes, NSDictionary *eventTags, NSDictionary<NSString *,NSString *> *event) {
+        NSString *logMessage = @"track notification called with %@";
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, eventKey] withLevel:OptimizelyLogLevelInfo];
+        [weakSelf.projectConfig.logger logMessage:[NSString stringWithFormat:logMessage, userId] withLevel:OptimizelyLogLevelInfo];
+    };
     
     NSData *datafile = [OPTLYTestHelper loadJSONDatafileIntoDataObject:kDataModelDatafileName];
     self.projectConfig = [OPTLYProjectConfig init:^(OPTLYProjectConfigBuilder * _Nullable builder){
@@ -167,16 +164,13 @@ static NSString *const kVariationId = @"6362476365";
 }
 
 - (void)testSendNotifications {
-    id activateNotificationMock = OCMPartialMock(_activateNotification);
-    id anotherActivateNotificationMock = OCMPartialMock(_anotherActivateNotification);
-    id trackNotificationMock = OCMPartialMock(_trackNotification);
     
     // Add activate notifications.
-    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:activateNotificationMock];
-    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:anotherActivateNotificationMock];
+    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:_activateNotification];
+    [_notificationCenter addNotification:OPTLYNotificationTypeActivate activateListener:_anotherActivateNotification];
     
     // Add track notification.
-    [_notificationCenter addNotification:OPTLYNotificationTypeTrack trackListener:trackNotificationMock];
+    [_notificationCenter addNotification:OPTLYNotificationTypeTrack trackListener:_trackNotification];
     
     // Fire decision type notifications.
     OPTLYExperiment *experiment = [_projectConfig getExperimentForKey:kExperimentKey];
@@ -188,20 +182,20 @@ static NSString *const kVariationId = @"6362476365";
     // Verify that only the registered notifications of decision type are called.
     [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, event, nil];
     
-    OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
-    OCMVerify([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
-    OCMVerify([anotherActivateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
+    OCMReject(_trackNotification);
+    OCMVerify(_activateNotification);
+    OCMVerify(_anotherActivateNotification);
     
     NSString *eventKey = [NSString stringWithFormat:@"%@", kUserId];
     NSDictionary *eventTags = [NSDictionary new];
     
     // Verify that only the registered notifications of track type are called.
     [_notificationCenter sendNotifications:OPTLYNotificationTypeTrack args:eventKey, userId, attributes, eventTags, event, nil];
-    
-    OCMVerify([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
-    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
-    OCMReject([anotherActivateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
-    
+
+    OCMVerify(_trackNotification);
+    OCMReject(_activateNotification);
+    OCMReject(_anotherActivateNotification);
+
     // Verify that after clearing notifications, SendNotification should not call any notification
     // which were previously registered.
     [_notificationCenter clearAllNotifications];
@@ -209,13 +203,9 @@ static NSString *const kVariationId = @"6362476365";
     [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, event, nil];
     
     // Again verify notifications which were registered are not called.
-    OCMReject([trackNotificationMock onTrack:[OCMArg any] userId:userId attributes:attributes eventTags:[OCMArg any] event:event]);
-    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
-    OCMReject([activateNotificationMock onActivate:experiment userId:userId attributes:attributes variation:variation event:event]);
-    
-    [activateNotificationMock stopMocking];
-    [anotherActivateNotificationMock stopMocking];
-    [trackNotificationMock stopMocking];
+    OCMReject(_trackNotification);
+    OCMReject(_activateNotification);
+    OCMReject(_anotherActivateNotification);
 }
 
 @end
