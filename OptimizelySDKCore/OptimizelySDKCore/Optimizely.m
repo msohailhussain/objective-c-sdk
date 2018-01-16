@@ -472,7 +472,10 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     if ([experimentVariationMapping count] > 0) {
         userInfo[OptimizelyNotificationsUserDictionaryExperimentVariationMappingKey] = [experimentVariationMapping copy];
     }
-    [_notificationCenter sendNotifications:OPTLYNotificationTypeTrack args:eventKey, userId, attributes, eventTags, conversionEventParams, nil];
+    NSString *_userId = userId ? userId : @"";
+    NSDictionary *_attributes = attributes ? attributes : [NSDictionary new];
+    NSDictionary *_eventTags = eventTags ? eventTags : [NSDictionary new];
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeTrack args:eventKey, _userId, _attributes, _eventTags, conversionEventParams, nil];
 }
 
 # pragma mark - Helper methods
@@ -539,7 +542,9 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
                                                  callback(error);
                                              }
                                          }];
-    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, userId, attributes, variation, impressionEventParams, nil];
+    NSString *_userId = userId ? userId : @"";
+    NSDictionary *_attributes = attributes ? attributes : [NSDictionary new];
+    [_notificationCenter sendNotifications:OPTLYNotificationTypeActivate args:experiment, _userId, _attributes, variation, impressionEventParams, nil];
     return variation;
 }
 
