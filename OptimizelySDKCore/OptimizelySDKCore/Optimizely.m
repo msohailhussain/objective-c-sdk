@@ -31,7 +31,6 @@
 #import "OPTLYProjectConfig.h"
 #import "OPTLYUserProfileServiceBasic.h"
 #import "OPTLYVariation.h"
-#import "OPTLYMacros.h"
 #import "OPTLYFeatureFlag.h"
 #import "OPTLYFeatureDecision.h"
 #import "OPTLYDecisionService.h"
@@ -196,17 +195,17 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
 #pragma mark - Feature Flag Methods
 
 - (BOOL)isFeatureEnabled:(NSString *)featureKey userId:(NSString *)userId attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes {
-    if (isEmptyString(userId)) {
+    if ([Optimizely isEmptyString:userId]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureDisabledUserIdInvalid withLevel:OptimizelyLogLevelError];
         return false;
     }
-    if (isEmptyString(featureKey)) {
+    if ([Optimizely isEmptyString:featureKey]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureDisabledFlagKeyInvalid withLevel:OptimizelyLogLevelError];
         return false;
     }
     
     OPTLYFeatureFlag *featureFlag = [self.config getFeatureFlagForKey:featureKey];
-    if (isEmptyString(featureFlag.Key)) {
+    if ([Optimizely isEmptyString:featureFlag.key]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureDisabledFlagKeyInvalid withLevel:OptimizelyLogLevelError];
         return false;
     }
@@ -240,21 +239,21 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
                                  variableKey:(nullable NSString *)variableKey
                                       userId:(nullable NSString *)userId
                                   attributes:(nullable NSDictionary<NSString *, NSString *> *)attributes {
-    if (isEmptyString(featureKey)) {
+    if ([Optimizely isEmptyString:featureKey]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureVariableValueFlagKeyInvalid withLevel:OptimizelyLogLevelError];
         return nil;
     }
-    if (isEmptyString(variableKey)) {
+    if ([Optimizely isEmptyString:variableKey]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureVariableValueVariableKeyInvalid withLevel:OptimizelyLogLevelError];
         return nil;
     }
-    if (isEmptyString(userId)) {
+    if ([Optimizely isEmptyString:userId]) {
         [self.logger logMessage:OPTLYLoggerMessagesFeatureVariableValueUserIdInvalid withLevel:OptimizelyLogLevelError];
         return nil;
     }
     
     OPTLYFeatureFlag *featureFlag = [self.config getFeatureFlagForKey:featureKey];
-    if (isEmptyString(featureFlag.Key)) {
+    if ([Optimizely isEmptyString:featureFlag.key]) {
         return nil;
     }
     
@@ -278,14 +277,14 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
         
         if (featureVariableUsageInstance) {
             variableValue = featureVariableUsageInstance.value;
-            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureVariableValueVariableType, variableValue, variation.variationKey, featureFlag.Key];
+            NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureVariableValueVariableType, variableValue, variation.variationKey, featureFlag.key];
             [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
         } else {
             NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureVariableValueNotUsed, variableKey, variation.variationKey, variableValue];
             [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
         }
     } else {
-        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureVariableValueNotBucketed, userId, featureFlag.Key, variableValue];
+        NSString *logMessage = [NSString stringWithFormat:OPTLYLoggerMessagesFeatureVariableValueNotBucketed, userId, featureFlag.key, variableValue];
         [self.logger logMessage:logMessage withLevel:OptimizelyLogLevelInfo];
     }
     
@@ -521,7 +520,7 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
                                                                             variationId:variation.variationId
                                                                              attributes:attributes];
     
-    if (isEmptyDictionary(impressionEventParams)) {
+    if ([Optimizely isEmptyDictionary:impressionEventParams]) {
         return nil;
     }
     
@@ -544,4 +543,15 @@ NSString *const OptimizelyNotificationsUserDictionaryExperimentVariationMappingK
     return variation;
 }
 
++ (BOOL)isEmptyString:(NSObject*)string {
+    return (!string
+            || ![string isKindOfClass:[NSString class]]
+            || [(NSString *)string isEqualToString:@""]);
+}
+
++ (BOOL)isEmptyDictionary:(NSObject*)dict {
+    return (!dict
+            || ![dict isKindOfClass:[NSDictionary class]]
+            || (((NSDictionary *)dict).count == 0));
+}
 @end
