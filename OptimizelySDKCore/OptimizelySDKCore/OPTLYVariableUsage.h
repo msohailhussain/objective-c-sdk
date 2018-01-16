@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -16,36 +16,20 @@
 
 #import <Foundation/Foundation.h>
 #ifdef UNIVERSAL
-    #import "OPTLYJSONModelLib.h"
+#import "OPTLYJSONModelLib.h"
 #else
-    #import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+#import <OptimizelySDKCore/OPTLYJSONModelLib.h>
 #endif
 
-/**
- * This class is a representation of an Optimizely live variable scoped within a project:
- *   "variables": [
- *    {
- *      "id": "6384881128",
- *      "key": "someString",
- *      "type": "string",
- *      "defaultValue": "defaultStringValue"
- *    },
- *     ...
- *    ]
- */
 
-@protocol OPTLYVariable
+@protocol OPTLYVariableUsage
 @end
 
-@interface OPTLYVariable : OPTLYJSONModel
+@interface OPTLYVariableUsage : OPTLYJSONModel
 
-/// The variable's ID.
+/// an NSString to hold the variable ID which is being modified by this usage
 @property (nonatomic, strong) NSString *variableId;
-/// The variable's Key.
-@property (nonatomic, strong) NSString *variableKey;
-/// The variable's type.
-@property (nonatomic, strong) NSString *type;
-/// The variable's default value.
-@property (nonatomic, strong) NSString *defaultValue;
+/// an NSString to hold the variable value for users in this particular variation
+@property (nonatomic, strong) NSString *value;
 
 @end

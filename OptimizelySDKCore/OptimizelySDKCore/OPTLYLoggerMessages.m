@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
+ * Copyright 2017-2018, Optimizely, Inc. and contributors                   *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -22,6 +22,20 @@ NSString *const OPTLYLoggerMessagesVariationUserAssigned = @"[OPTIMIZELY] User %
 // info
 NSString *const OPTLYLoggerMessagesActivationSuccess = @"[OPTIMIZELY] Activating user %@ in experiment %@.";
 NSString *const OPTLYLoggerMessagesConversionSuccess = @"[OPTIMIZELY] Tracking event %@ for user %@.";
+// error
+NSString *const OPTLYLoggerMessagesFeatureDisabledUserIdInvalid = @"[OPTIMIZELY] User ID must not be empty for feature enabled.";
+NSString *const OPTLYLoggerMessagesFeatureDisabledFlagKeyInvalid = @"[OPTIMIZELY] Feature flag key must not be empty for feature enabled.";
+NSString *const OPTLYLoggerMessagesFeatureDisabled = @"[OPTIMIZELY] Feature flag %@ is not enabled for user %@.";
+NSString *const OPTLYLoggerMessagesFeatureEnabledNotExperimented = @"[OPTIMIZELY] The user %@ is not being experimented on feature %@.";
+NSString *const OPTLYLoggerMessagesFeatureEnabled = @"[OPTIMIZELY] Feature flag %@ is enabled for user %@.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueFlagKeyInvalid = @"[OPTIMIZELY] Feature flag key must not be empty for feature variable value.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableKeyInvalid = @"[OPTIMIZELY] Variable key must not be empty for feature variable value.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueUserIdInvalid = @"[OPTIMIZELY] User ID must not be empty for feature variable value.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableInvalid = @"[OPTIMIZELY] No feature variable was found for key %@ in feature flag %@.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableTypeInvalid = @"[OPTIMIZELY] Variable is of type %@, but you requested it as type %@.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueVariableType = @"[OPTIMIZELY] Returning variable value %@ for variation %@ of feature flag %@";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueNotUsed = @"[OPTIMIZELY] Variable %@ is not used in variation %@, returning default value %@.";
+NSString *const OPTLYLoggerMessagesFeatureVariableValueNotBucketed = @"[OPTIMIZELY] User %@ is not in any variation for feature flag %@, returning default value %@.";
 
 // ---- Bucketer ----
 // debug
@@ -137,14 +151,6 @@ NSString *const OPTLYLoggerMessagesEventDispatcherEventNotTracked = @"[EVENT DIS
 NSString *const OPTLYLoggerMessagesEventDispatcherActivationFailure = @"[EVENT DISPATCHER] Not activating user %@ for experiment %@.";
 NSString *const OPTLYLoggerMessagesEventDispatcherInvalidEvent = @"[EVENT DISPATCHER] Invalid event.";
 
-// ---- Live Variables ----
-// info
-NSString *const OPTLYLoggerMessagesVariableValue = @"[LIVE VARIABLES] Variable %@ has value: %@.";
-NSString *const OPTLYLoggerMessagesNoVariationFoundForExperimentWithLiveVariable = @"[LIVE VARIABLES] Variation not found for user ID: %@ with experiment key: %@ containing live variable: %@.";
-// warning
-NSString *const OPTLYLoggerMessagesNoExperimentsContainVariable = @"[LIVE VARIABLES] No experiment was found to contain variable key: %@.";
-NSString *const OPTLYLoggerMessagesVariableUnknownForVariableKey = @"[LIVE VARIABLES] Live variable not found for variable key: %@."; // live variable key
-
 // ---- Manager ----
 // error
 NSString *const OPTLYLoggerMessagesManagerBuilderNotValid = @"[MANAGER] An Optimizely Manager instance was not able to be initialized because the OPTLYManagerBuilder object was invalid.";
@@ -169,6 +175,9 @@ NSString *const OPTLYLoggerMessagesEventUnknownForEventKey = @"[PROJECT CONFIG] 
 NSString *const OPTLYLoggerMessagesExperimentIdUnknownForExperimentKey = @"[PROJECT CONFIG] Experiment ID not found for experiment key: %@. Experiment key is not in the datafile."; // experiment key
 NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentId = @"[PROJECT CONFIG] Experiment not found for experiment ID: %@. Experiment ID is not in the datafile."; // experiment id
 NSString *const OPTLYLoggerMessagesExperimentUnknownForExperimentKey = @"[PROJECT CONFIG] Experiment key not found for experiment: %@. Experiment key is not in the datafile.";  // experiment key
+NSString *const OPTLYLoggerMessagesFeatureFlagUnknownForFeatureFlagKey = @"[PROJECT CONFIG] Feature Flag key not found for feature flag: %@. Feature Flag key is not in the datafile.";  // feature flag key
+NSString *const OPTLYLoggerMessagesVariableUsageUnknownForVariableId = @"[PROJECT CONFIG] Rollout not found for rollout ID: %@. Rollout ID is not in the datafile."; // feature variable id
+NSString *const OPTLYLoggerMessagesRolloutUnknownForRolloutId = @"[PROJECT CONFIG] Rollout not found for rollout ID: %@. Rollout ID is not in the datafile."; // rollout id
 NSString *const OPTLYLoggerMessagesGroupUnknownForGroupId = @"[PROJECT CONFIG] Group not found for group ID: %@. Group ID is not in the datafile."; // group id
 NSString *const OPTLYLoggerMessagesGetVariationNilVariation = @"[PROJECT CONFIG] Get variation returned a nil variation for user %@, experiment %@";
 NSString *const OPTLYLoggerMessagesVariationKeyUnknownForExperimentKey = @"[PROJECT CONFIG] Variation key %@ not found for experiment key %@.";
@@ -202,7 +211,20 @@ NSString *const OPTLYLoggerMessagesDecisionServiceSavedVariationParseError = @"[
 NSString *const OPTLYLoggerMessagesDecisionServiceGetVariationParseError = @"[DECISION SERVICE] User profile parse error: %@. Unable to get user bucket information for: %@.";
 NSString *const OPTLYLoggerMessagesDecisionServiceReplaceBucketEntity = @"[DECISION SERVICE] Replacing user %@ experiment bucket map entity %@ with %@.";
 NSString *const OPTLYLoggerMessagesDecisionServiceSettingTheBucketingID = @"[DECISION SERVICE] Setting the bucketing ID to %@.";
-
+NSString *const OPTLYLoggerMessagesDecisionServiceFFNotUsed = @"[DECISION SERVICE] Feature flag %@ is not used in any experiments.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFFUserBucketed = @"[DECISION SERVICE] User %@ is bucketed into experiment %@ of feature %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFFUserNotBucketed = @"[DECISION SERVICE] User %@ is not bucketed into any of the experiments using the feature %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRNotUsed = @"[DECISION SERVICE] Feature flag %@ is not used in a rollout.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRBucketing = @"[DECISION SERVICE] Attempting to bucket user %@ into rollout rule %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRUserBucketed = @"[DECISION SERVICE] User %@ is bucketed into rollout for feature flag %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRUserExcluded = @"[DECISION SERVICE] User %@ was excluded due to traffic allocation. Checking 'Everyone Else' rule now.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRUserExcludedEveryoneElse = @"[DECISION SERVICE] User %@ was excluded from the 'Everyone Else' rule for feature flag.";
+NSString *const OPTLYLoggerMessagesDecisionServiceFRUserNotBucketed = @"[DECISION SERVICE] User %@ is not bucketed into rollout for feature flag %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceUserBucketed = @"[DECISION SERVICE] User with bucketing ID %@ is in experiment %@ of group %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceUserNotBucketed = @"[DECISION SERVICE] User with bucketing ID %@ is not in any experiments of group %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceUserInVariation = @"[DECISION SERVICE] User %@ is in variation %@ of experiment %@.";
+NSString *const OPTLYLoggerMessagesDecisionServiceGroupIdNotFound = @"[PROJECT CONFIG] Group Id not found.";
+NSString *const OPTLYLoggerMessagesDecisionServiceGroupUnknownForGroupId = @"[PROJECT CONFIG] Group not found for group ID: %@.";
 
 // ---- HTTP Request Manager ----
 // Debug (not through logger handler)

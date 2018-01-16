@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -14,16 +14,30 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
-#import "OPTLYVariable.h"
-#import "OPTLYDatafileKeys.h"
+#import <Foundation/Foundation.h>
+#ifdef UNIVERSAL
+#import "OPTLYJSONModelLib.h"
+#else
+#import <OptimizelySDKCore/OPTLYJSONModelLib.h>
+#endif
 
-@implementation OPTLYVariable
+extern NSString * const FeatureVariableTypeBoolean;
+extern NSString * const FeatureVariableTypeString;
+extern NSString * const FeatureVariableTypeInteger;
+extern NSString * const FeatureVariableTypeDouble;
 
-+ (OPTLYJSONKeyMapper*)keyMapper
-{
-    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysVariableId     : @"variableId",
-                                                        OPTLYDatafileKeysVariableKey    : @"variableKey"
-                                                        }];
-}
+@protocol OPTLYFeatureVariable
+@end
+
+@interface OPTLYFeatureVariable : OPTLYJSONModel
+
+/// an NSString to hold the feature variable's ID
+@property (nonatomic, strong) NSString *variableId;
+/// an NSString to hold the feature variable's key
+@property (nonatomic, strong) NSString *key;
+/// an NSString to hold the feature variable's primitive type. Will be one of 4 possible values: a.	boolean b.	string c.	integer d.	double
+@property (nonatomic, strong) NSString *type;
+/// an NSString to hold the feature variable's default value in string representation.
+@property (nonatomic, strong) NSString *defaultValue;
 
 @end

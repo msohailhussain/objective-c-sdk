@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -14,14 +14,16 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
-#import "OPTLYVariationVariable.h"
+#import "OPTLYRollout.h"
 #import "OPTLYDatafileKeys.h"
 
-@implementation OPTLYVariationVariable
+@implementation OPTLYRollout
+
 + (OPTLYJSONKeyMapper*)keyMapper
 {
-    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysVariationVariableId     : @"variableId",
-                                                        }];
+    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysRolloutId             : @"rolloutId",
+                                                             OPTLYDatafileKeysRolloutExperiments    : @"experiments"
+                                                             }];
 }
 
 @end

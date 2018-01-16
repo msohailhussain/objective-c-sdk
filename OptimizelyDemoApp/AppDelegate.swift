@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016-2017, Optimizely, Inc. and contributors                   *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -186,7 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     variationViewController.eventKey = self.eventKey
                     variationViewController.optimizelyClient = optimizelyClient
                     variationViewController.userId = self.userId
-                    variationViewController.variationKey = (bucketedVariation!.variationKey)!
+                    variationViewController.variationKey = bucketedVariation!.variationKey
                     rootViewController = variationViewController
                 }
             }

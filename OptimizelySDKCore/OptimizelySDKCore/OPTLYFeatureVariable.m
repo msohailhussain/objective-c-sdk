@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2016, Optimizely, Inc. and contributors                        *
+ * Copyright 2017, Optimizely, Inc. and contributors                        *
  *                                                                          *
  * Licensed under the Apache License, Version 2.0 (the "License");          *
  * you may not use this file except in compliance with the License.         *
@@ -14,4 +14,23 @@
  * limitations under the License.                                           *
  ***************************************************************************/
 
-#define StringOrEmpty(A)  ({ __typeof__(A) __a = (A); __a ? __a : @""; })
+#import "OPTLYFeatureVariable.h"
+#import "OPTLYDatafileKeys.h"
+
+NSString * const FeatureVariableTypeBoolean = @"boolean";
+NSString * const FeatureVariableTypeString  = @"string";
+NSString * const FeatureVariableTypeInteger = @"integer";
+NSString * const FeatureVariableTypeDouble  = @"double";
+
+@implementation OPTLYFeatureVariable
+
++ (OPTLYJSONKeyMapper*)keyMapper
+{
+    return [[OPTLYJSONKeyMapper alloc] initWithDictionary:@{ OPTLYDatafileKeysFeatureVariableId             : @"variableId",
+                                                             OPTLYDatafileKeysFeatureVariableKey            : @"key",
+                                                             OPTLYDatafileKeysFeatureVariableType           : @"type",
+                                                             OPTLYDatafileKeysFeatureVariableDefaultValue   : @"defaultValue"
+                                                             }];
+}
+
+@end
